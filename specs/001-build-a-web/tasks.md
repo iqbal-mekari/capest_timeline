@@ -55,26 +55,26 @@ test/
 ```
 
 ## Phase 3.1: Setup
-- [ ] T001 Create Flutter project structure with clean architecture folders
-- [ ] T002 Initialize Flutter web project with dependencies (provider, shared_preferences)
-- [ ] T003 [P] Configure analysis_options.yaml for linting and formatting
-- [ ] T004 [P] Set up basic Material Design theme in lib/shared/themes/app_theme.dart
-- [ ] T005 [P] Create core error types in lib/core/errors/exceptions.dart
+- [x] T001 Create Flutter project structure with clean architecture folders
+- [x] T002 Initialize Flutter web project with dependencies (provider, shared_preferences)
+- [x] T003 [P] Configure analysis_options.yaml for linting and formatting
+- [x] T004 [P] Set up basic Material Design theme in lib/shared/themes/app_theme.dart
+- [x] T005 [P] Create core error types in lib/core/errors/exceptions.dart
 
 ## Phase 3.2: Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
 **CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
 
 ### Storage Contract Tests
-- [ ] T006 [P] Contract test QuarterPlanStorageService in test/unit/storage/quarter_plan_storage_service_test.dart
-- [ ] T007 [P] Contract test ApplicationStateService in test/unit/storage/application_state_service_test.dart
-- [ ] T008 [P] Contract test ConfigurationService in test/unit/storage/configuration_service_test.dart
+- [x] T006 [P] Contract test QuarterPlanStorageService in test/unit/storage/quarter_plan_storage_service_test.dart
+- [x] T007 [P] Contract test ApplicationStateService in test/unit/storage/application_state_service_test.dart
+- [x] T008 [P] Contract test ConfigurationService in test/unit/storage/configuration_service_test.dart
 
 ### Business Logic Contract Tests
-- [ ] T009 [P] Contract test CapacityPlanningService in test/unit/services/capacity_planning_service_test.dart
-- [ ] T010 [P] Contract test TeamManagementService in test/unit/services/team_management_service_test.dart
+- [x] T009 [P] Contract test CapacityPlanningService in test/unit/services/capacity_planning_service_test.dart
+- [x] T010 [P] Contract test TeamManagementService in test/unit/services/team_management_service_test.dart
 
 ### Entity Tests
-- [ ] T011 [P] Unit test Initiative entity in test/unit/entities/initiative_test.dart
+- [x] T011 [P] Unit test Initiative entity in test/unit/entities/initiative_test.dart
 - [ ] T012 [P] Unit test TeamMember entity in test/unit/entities/team_member_test.dart
 - [ ] T013 [P] Unit test CapacityAllocation entity in test/unit/entities/capacity_allocation_test.dart
 - [ ] T014 [P] Unit test QuarterPlan entity in test/unit/entities/quarter_plan_test.dart
