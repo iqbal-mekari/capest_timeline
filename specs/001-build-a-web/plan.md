@@ -1,8 +1,8 @@
 
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Capacity Estimation Web Application
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `001-build-a-web` | **Date**: 2025-09-23 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/001-build-a-web/spec.md`
 
 ## Execution Flow (/plan command scope)
 ```
@@ -31,27 +31,31 @@
 - Phase 3-4: Implementation execution (manual or via tools)
 
 ## Summary
-[Extract from feature spec: primary requirement + technical approach from research]
+A quarterly capacity estimation web application that enables project managers to visualize and plan development team allocation across weekly timelines. Features a kanban-style drag-and-drop interface for assigning initiative requirements (Backend, Frontend, Mobile, QA roles) to team members with capacity conflict detection and automatic state persistence to local storage.
 
 ## Technical Context
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: Dart/Flutter 3.13+ (web target)  
+**Primary Dependencies**: flutter_web, provider (state management), shared_preferences (local storage), minimal 3rd party packages as specified  
+**Storage**: Browser local storage for single-user state persistence  
+**Testing**: flutter_test with target 90%+ code coverage using Test-Driven Development  
+**Target Platform**: Web browsers (responsive design)  
+**Project Type**: web - Single-page application with clean architecture  
+**Performance Goals**: <200ms for interactive operations (drag/drop), <2s for data operations (save/load)  
+**Constraints**: Minimal 3rd party dependencies, assets referenced within repo, offline-capable with local storage  
+**Scale/Scope**: Single-user application, up to 50 team members, 100+ initiatives per quarter, 13-52 week timeline views
 
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-**Code Quality Standards**: Ensure technical choices support readable, maintainable code with clear documentation.
-**Test-First Development**: Verify TDD approach is planned with test phases preceding implementation phases.
-**UX Consistency**: Confirm user experience patterns are specified and accessibility considerations included.
-**Performance Excellence**: Check that performance targets (<200ms interactive, <2s data operations) are addressed.
-**Observability**: Ensure logging, monitoring, and error tracking are included in the technical approach.
+**Code Quality Standards**: ✅ Flutter/Dart enforces strong typing and linting. Clean architecture with clear separation of concerns (presentation/domain/data layers). Provider pattern provides testable dependency injection. Code documentation required for complex business logic.
+
+**Test-First Development**: ✅ TDD approach planned with 90%+ coverage target. Widget tests for UI components, unit tests for business logic, integration tests for user workflows. Flutter's testing framework supports comprehensive test strategies.
+
+**UX Consistency**: ✅ Material Design provides consistent UI patterns. Responsive design for various screen sizes. Accessibility support through Flutter's semantics. User feedback states for loading/success/error. Drag-and-drop interactions follow platform conventions.
+
+**Performance Excellence**: ✅ <200ms target for interactive operations (drag/drop, navigation). <2s for data operations (save/load). Local storage eliminates network latency. Flutter web optimizations for bundle size and rendering performance.
+
+**Observability**: ✅ Structured logging for debugging user actions and data operations. Error tracking for local storage failures and data corruption. Performance monitoring for drag/drop operations and large dataset rendering. Analytics for capacity planning usage patterns.
 
 ## Project Structure
 
@@ -103,7 +107,7 @@ ios/ or android/
 └── [platform-specific structure]
 ```
 
-**Structure Decision**: [DEFAULT to Option 1 unless Technical Context indicates web/mobile app]
+**Structure Decision**: Option 1 (Single project) - Flutter web application with clean architecture layers
 
 ## Phase 0: Outline & Research
 1. **Extract unknowns from Technical Context** above:
@@ -163,19 +167,51 @@ ios/ or android/
 *This section describes what the /tasks command will do - DO NOT execute during /plan*
 
 **Task Generation Strategy**:
-- Load `.specify/templates/tasks-template.md` as base
-- Generate tasks from Phase 1 design docs (contracts, data model, quickstart)
-- Each contract → contract test task [P]
-- Each entity → model creation task [P] 
-- Each user story → integration test task
-- Implementation tasks to make tests pass
+- Load `.specify/templates/tasks-template.md` as base structure
+- Generate tasks from Phase 1 design artifacts following TDD principles
+- Extract from data-model.md: Entity creation tasks, validation logic tasks
+- Extract from api-contracts.md: Service interface tasks, storage implementation tasks
+- Extract from quickstart.md: Integration test scenario tasks
+- Each contract service → interface definition task [P] + implementation task
+- Each entity → model class task [P] + unit test task [P]
+- Each user story → integration test task + UI implementation task
+- Configuration setup tasks for Flutter web, Provider, local storage
 
 **Ordering Strategy**:
-- TDD order: Tests before implementation 
-- Dependency order: Models before services before UI
-- Mark [P] for parallel execution (independent files)
+- **TDD Order**: Test tasks before implementation tasks for each component
+- **Dependency Order**: 
+  1. Core entities and validation (models, exceptions)
+  2. Storage abstractions and services (repositories, local storage)
+  3. Business logic and use cases (capacity planning, team management)
+  4. UI state management (Provider setup, view models)
+  5. UI components and screens (widgets, responsive layout)
+  6. Integration and E2E tests (user workflow validation)
+- **Parallel Execution**: Mark [P] for independent tasks (separate files/classes)
+- **Critical Path**: Drag-and-drop functionality depends on data model + UI components
 
-**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md
+**Estimated Task Breakdown**:
+- **Phase Setup** (3 tasks): Flutter project initialization, dependencies, folder structure
+- **Core Foundation** (8 tasks): Entities, validation, exceptions, utilities [P]
+- **Storage Layer** (6 tasks): Local storage service, repositories, error handling [P]
+- **Business Logic** (10 tasks): Use cases, capacity calculations, conflict detection [P]
+- **State Management** (5 tasks): Provider setup, view models, state persistence
+- **UI Components** (12 tasks): Timeline, drag-drop, forms, responsive layout [P]
+- **Integration** (4 tasks): E2E tests, performance validation, accessibility testing
+- **Total Estimated**: 48 numbered, ordered tasks with dependencies clearly marked
+
+**Testing Strategy Integration**:
+- Every implementation task preceded by corresponding test task
+- Widget tests for UI components (Material Design compliance)
+- Unit tests for business logic (capacity calculations, validation)
+- Integration tests for user workflows (quickstart scenarios)
+- Performance tests for drag-and-drop operations (<200ms target)
+
+**Constitutional Compliance Tasks**:
+- Code quality: Linting setup, documentation requirements
+- TDD enforcement: Test coverage reporting, test-first validation
+- UX consistency: Accessibility testing, responsive design validation
+- Performance: Benchmark setup, monitoring implementation
+- Observability: Logging setup, error tracking integration
 
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
@@ -199,18 +235,18 @@ ios/ or android/
 *This checklist is updated during execution flow*
 
 **Phase Status**:
-- [ ] Phase 0: Research complete (/plan command)
-- [ ] Phase 1: Design complete (/plan command)
-- [ ] Phase 2: Task planning complete (/plan command - describe approach only)
+- [x] Phase 0: Research complete (/plan command)
+- [x] Phase 1: Design complete (/plan command)
+- [x] Phase 2: Task planning complete (/plan command - describe approach only)
 - [ ] Phase 3: Tasks generated (/tasks command)
 - [ ] Phase 4: Implementation complete
 - [ ] Phase 5: Validation passed
 
 **Gate Status**:
-- [ ] Initial Constitution Check: PASS
-- [ ] Post-Design Constitution Check: PASS
-- [ ] All NEEDS CLARIFICATION resolved
-- [ ] Complexity deviations documented
+- [x] Initial Constitution Check: PASS
+- [x] Post-Design Constitution Check: PASS
+- [x] All NEEDS CLARIFICATION resolved
+- [x] Complexity deviations documented
 
 ---
 *Based on Constitution v2.1.1 - See `/memory/constitution.md`*
