@@ -109,7 +109,7 @@ sealed class Result<T, E> {
   /// Converts this Result to a Future
   Future<T> toFuture() => switch (this) {
     Success(value: final v) => Future.value(v),
-    Error(error: final e) => Future.error(e),
+    Error(error: final e) => Future.error(e as Object),
   };
 
   /// Creates a Result from a Future, catching any exceptions

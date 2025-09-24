@@ -36,6 +36,9 @@ dependencies:
   
   # Local storage for web
   shared_preferences: ^2.2.2
+  
+  # Value equality for entities
+  equatable: ^2.0.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
