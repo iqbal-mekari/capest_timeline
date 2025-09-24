@@ -8,6 +8,7 @@ library;
 import 'package:flutter/material.dart';
 import '../shared/widgets/common_widgets.dart';
 import '../features/capacity_planning/presentation/screens/capacity_planning_screen.dart';
+import '../features/team_management/presentation/screens/team_management_screen.dart';
 
 /// Main application shell widget
 class AppShell extends StatefulWidget {
@@ -212,11 +213,13 @@ class _AppShellState extends State<AppShell> {
               icon: Icons.people_outline,
               title: 'No Team Members Yet',
               message: 'Add team members to start tracking their capacity and availability.',
-              actionLabel: 'Add Team Member',
+              actionLabel: 'Open Team Management',
               onAction: () {
-                // TODO: Navigate to add team member
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add Team Member feature coming soon!')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TeamManagementScreen(),
+                  ),
                 );
               },
             ),
