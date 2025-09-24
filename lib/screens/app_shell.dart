@@ -7,8 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../shared/widgets/common_widgets.dart';
-import '../features/capacity_planning/presentation/screens/capacity_planning_screen.dart';
-import '../features/team_management/presentation/screens/team_management_screen.dart';
+import '../core/navigation/app_router.dart';
 
 /// Main application shell widget
 class AppShell extends StatefulWidget {
@@ -30,6 +29,29 @@ class _AppShellState extends State<AppShell> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+    
+    // Navigate to the appropriate route based on index
+    switch (index) {
+      case 0:
+        NavigationHelper.goHome();
+        break;
+      case 1:
+        NavigationHelper.goToTeam();
+        break;
+      case 2:
+        NavigationHelper.goToAnalytics();
+        break;
+      case 3:
+        _showSettingsPage();
+        break;
+    }
+  }
+  
+  /// Show settings page inline
+  void _showSettingsPage() {
+    setState(() {
+      _selectedIndex = 3;
     });
   }
 
@@ -84,7 +106,7 @@ class _AppShellState extends State<AppShell> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          _buildPlanningView(),
+          _buildHomeView(),
           _buildTeamView(),
           _buildAnalyticsView(),
           _buildSettingsView(),
@@ -95,10 +117,10 @@ class _AppShellState extends State<AppShell> {
         onDestinationSelected: _onItemTapped,
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.timeline_outlined),
-            selectedIcon: Icon(Icons.timeline),
-            label: 'Planning',
-            tooltip: 'Capacity Planning',
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+            tooltip: 'Home Dashboard',
           ),
           NavigationDestination(
             icon: Icon(Icons.people_outline),
@@ -123,8 +145,8 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  /// Build the capacity planning view
-  Widget _buildPlanningView() {
+  /// Build the home dashboard view
+  Widget _buildHomeView() {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -162,12 +184,7 @@ class _AppShellState extends State<AppShell> {
               message: 'Create your first quarter plan to start managing team capacity and initiatives.',
               actionLabel: 'Open Capacity Planning',
               onAction: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CapacityPlanningScreen(),
-                  ),
-                );
+                NavigationHelper.goToPlanning();
               },
             ),
           ),
@@ -215,12 +232,7 @@ class _AppShellState extends State<AppShell> {
               message: 'Add team members to start tracking their capacity and availability.',
               actionLabel: 'Open Team Management',
               onAction: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TeamManagementScreen(),
-                  ),
-                );
+                NavigationHelper.goToTeam();
               },
             ),
           ),
@@ -269,10 +281,7 @@ class _AppShellState extends State<AppShell> {
               message: 'Analytics will be available once you have team members and active initiatives.',
               actionLabel: 'View Sample Dashboard',
               onAction: () {
-                // TODO: Show sample analytics
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Sample analytics coming soon!')),
-                );
+                NavigationHelper.goToAnalytics();
               },
             ),
           ),

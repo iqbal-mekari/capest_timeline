@@ -16,8 +16,8 @@ import 'features/capacity_planning/presentation/providers/capacity_planning_prov
 import 'features/team_management/presentation/providers/team_management_providers.dart';
 import 'features/configuration/presentation/providers/configuration_providers.dart';
 
-// Screens
-import 'screens/app_shell.dart';
+// Navigation
+import 'core/navigation/app_router.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized
@@ -101,7 +101,10 @@ class CapacityTimelineApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: _getThemeMode(userConfig.currentTheme),
-            home: const AppInitializer(),
+            navigatorKey: AppRouter.navigatorKey,
+            onGenerateRoute: AppRouter.generateRoute,
+            onUnknownRoute: AppRouter.unknownRoute,
+            initialRoute: AppRouter.home,
           );
         },
       ),
@@ -120,89 +123,4 @@ class CapacityTimelineApp extends StatelessWidget {
   }
 }
 
-/// Widget that handles application initialization
-class AppInitializer extends StatefulWidget {
-  const AppInitializer({super.key});
 
-  @override
-  State<AppInitializer> createState() => _AppInitializerState();
-}
-
-class _AppInitializerState extends State<AppInitializer> {
-  @override
-  void initState() {
-    super.initState();
-    _initializeApp();
-  }
-
-  Future<void> _initializeApp() async {
-    final appStateProvider = context.read<ApplicationStateProvider>();
-    final userConfigProvider = context.read<UserConfigurationProvider>();
-    
-    // Initialize application state and user configuration
-    await Future.wait([
-      appStateProvider.initialize(),
-      userConfigProvider.loadUserConfiguration(),
-    ]);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer2<ApplicationStateProvider, UserConfigurationProvider>(
-      builder: (context, appState, userConfig, child) {
-        // Show loading screen while initializing
-        if (appState.isLoading || userConfig.isLoading) {
-          return const Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Initializing Capacity Timeline...'),
-                ],
-              ),
-            ),
-          );
-        }
-
-        // Show error screen if initialization failed
-        if (appState.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: Colors.red,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Failed to initialize application',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    appState.error ?? 'Unknown error occurred',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _initializeApp,
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        // Show main application
-        return const AppShell();
-      },
-    );
-  }
-}
