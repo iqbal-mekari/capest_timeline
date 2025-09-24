@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:capest_timeline/features/capacity_planning/domain/entities/initiative.dart';
-import 'package:capest_timeline/core/enums/role.dart';
+
 
 void main() {
   group('Initiative Entity Tests', () {

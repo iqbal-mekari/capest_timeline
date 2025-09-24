@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/types/result.dart';
 import '../../../../core/errors/exceptions.dart';
+import '../../../../shared/themes/app_theme.dart';
 
 /// Represents user-specific configuration and preferences.
 /// 
@@ -275,22 +276,7 @@ class UserConfiguration extends Equatable {
   }
 }
 
-/// Theme mode options
-enum AppThemeMode {
-  /// Light theme
-  light('Light'),
-  
-  /// Dark theme
-  dark('Dark'),
-  
-  /// Follow system theme
-  system('System');
 
-  const AppThemeMode(this.displayName);
-
-  /// Human-readable display name
-  final String displayName;
-}
 
 /// How to display capacity values
 enum CapacityDisplayMode {

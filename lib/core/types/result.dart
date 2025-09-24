@@ -156,6 +156,7 @@ final class Success<T, E> extends Result<T, E> {
   const Success(this.value);
 
   /// The successful value
+  @override
   final T value;
 }
 
@@ -164,6 +165,7 @@ final class Error<T, E> extends Result<T, E> {
   const Error(this.error);
 
   /// The error value
+  @override
   final E error;
 }
 

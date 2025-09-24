@@ -1,5 +1,24 @@
 import 'package:flutter/material.dart';
 
+/// Defines the available theme modes for the application
+enum AppThemeMode {
+  light,
+  dark,
+  system;
+
+  /// Human-readable display name
+  String get displayName {
+    switch (this) {
+      case AppThemeMode.light:
+        return 'Light';
+      case AppThemeMode.dark:
+        return 'Dark';
+      case AppThemeMode.system:
+        return 'System';
+    }
+  }
+}
+
 /// Application theme configuration following Material Design 3 principles
 /// for the Capacity Estimation web application.
 class AppTheme {

@@ -1,6 +1,7 @@
 /// Core exception types for the Capacity Estimation application.
 /// These exceptions are used throughout the application to handle
 /// various error scenarios with proper type safety and error messages.
+library;
 
 /// Base exception class for all application-specific exceptions
 abstract class AppException implements Exception {

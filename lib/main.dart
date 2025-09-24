@@ -1,125 +1,208 @@
-import 'package:flutter/material.dart';
+/// Main entry point for the Capacity Estimation Timeline application.
+/// 
+/// This file sets up the application with proper dependency injection,
+/// state management, and routing using Provider and MultiProvider.
+library;
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// Core imports
+import 'core/di/service_providers.dart';
+import 'shared/themes/app_theme.dart';
+
+// Feature providers
+import 'features/capacity_planning/presentation/providers/capacity_planning_providers.dart';
+import 'features/team_management/presentation/providers/team_management_providers.dart';
+import 'features/configuration/presentation/providers/configuration_providers.dart';
+
+// Screens
+import 'screens/app_shell.dart';
+
+void main() async {
+  // Ensure Flutter binding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize service providers
+  await ServiceProviders.initialize();
+  
+  runApp(const CapacityTimelineApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CapacityTimelineApp extends StatelessWidget {
+  const CapacityTimelineApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        // Service providers (repositories and use cases)
+        ...ServiceProviders.createProviders(),
+        
+        // UI state management providers
+        ChangeNotifierProvider<QuarterPlanProvider>(
+          create: (context) => QuarterPlanProvider(
+            createQuarterPlan: context.read(),
+            loadQuarterPlan: context.read(),
+            getCapacityAnalytics: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<InitiativeProvider>(
+          create: (context) => InitiativeProvider(
+            addInitiativeToPlan: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<AllocationProvider>(
+          create: (context) => AllocationProvider(
+            allocateCapacity: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<TeamMemberProvider>(
+          create: (context) => TeamMemberProvider(
+            addTeamMember: context.read(),
+            updateTeamMember: context.read(),
+            searchTeamMembers: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<AvailabilityProvider>(
+          create: (context) => AvailabilityProvider(
+            manageAvailability: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<TeamCapacityProvider>(
+          create: (context) => TeamCapacityProvider(
+            analyzeCapacity: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<ApplicationStateProvider>(
+          create: (context) => ApplicationStateProvider(
+            manageApplicationState: context.read(),
+            initializeApplication: context.read(),
+          ),
+        ),
+        
+        ChangeNotifierProvider<UserConfigurationProvider>(
+          create: (context) => UserConfigurationProvider(
+            manageUserConfiguration: context.read(),
+          ),
+        ),
+      ],
+      child: Consumer<UserConfigurationProvider>(
+        builder: (context, userConfig, child) {
+          return MaterialApp(
+            title: 'Capacity Timeline',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: _getThemeMode(userConfig.currentTheme),
+            home: const AppInitializer(),
+          );
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
+
+  ThemeMode _getThemeMode(AppThemeMode themeMode) {
+    switch (themeMode) {
+      case AppThemeMode.light:
+        return ThemeMode.light;
+      case AppThemeMode.dark:
+        return ThemeMode.dark;
+      case AppThemeMode.system:
+        return ThemeMode.system;
+    }
+  }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+/// Widget that handles application initialization
+class AppInitializer extends StatefulWidget {
+  const AppInitializer({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<AppInitializer> createState() => _AppInitializerState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _AppInitializerState extends State<AppInitializer> {
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future<void> _initializeApp() async {
+    final appStateProvider = context.read<ApplicationStateProvider>();
+    final userConfigProvider = context.read<UserConfigurationProvider>();
+    
+    // Initialize application state and user configuration
+    await Future.wait([
+      appStateProvider.initialize(),
+      userConfigProvider.loadUserConfiguration(),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return Consumer2<ApplicationStateProvider, UserConfigurationProvider>(
+      builder: (context, appState, userConfig, child) {
+        // Show loading screen while initializing
+        if (appState.isLoading || userConfig.isLoading) {
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('Initializing Capacity Timeline...'),
+                ],
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          );
+        }
+
+        // Show error screen if initialization failed
+        if (appState.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Colors.red,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Failed to initialize application',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    appState.error ?? 'Unknown error occurred',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _initializeApp,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          );
+        }
+
+        // Show main application
+        return const AppShell();
+      },
     );
   }
 }

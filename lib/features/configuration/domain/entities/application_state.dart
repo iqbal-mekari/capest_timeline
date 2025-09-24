@@ -470,7 +470,7 @@ class ApplicationFilters extends Equatable {
         'completed: $showCompletedInitiatives, '
         'inactive: $showInactiveMembers, '
         'roles: ${roleFilter.length}, '
-        'search: "${searchQuery}", '
+        'search: "$searchQuery", '
         'active: $hasActiveFilters'
         ')';
   }
