@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Repository interfaces
@@ -37,6 +38,11 @@ import '../../services/business/capacity_planning_service.dart';
 // Data sources
 import '../../features/configuration/data/datasources/local_storage_data_source.dart';
 
+// Presentation providers
+import '../../features/capacity_planning/presentation/providers/capacity_planning_provider.dart';
+import '../../features/team_management/presentation/providers/team_management_provider.dart';
+import '../../features/configuration/presentation/providers/configuration_provider.dart';
+
 /// Service locator for managing application dependencies
 class ServiceProviders {
   ServiceProviders._();
@@ -47,13 +53,14 @@ class ServiceProviders {
   /// - Repositories (for data access)
   /// - Use cases (for business logic)  
   /// - Services (for application state management)
+  /// - Presentation providers (for UI state management)
   /// 
   /// All providers depend on SharedPreferences which must be initialized first
   /// using ServiceProviders.initialize().
   /// 
   /// Returns a list of Provider instances suitable for use with
   /// MultiProvider to inject all required dependencies.
-  static List<Provider> createProviders() {
+  static List<SingleChildWidget> createProviders() {
     // Ensure SharedPreferences is initialized
     if (_sharedPreferences == null) {
       throw StateError(
@@ -213,6 +220,27 @@ class ServiceProviders {
           capacityRepository: context.read<CapacityPlanningRepository>(),
           teamRepository: context.read<TeamManagementRepository>(),
           configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      // Presentation providers
+      ChangeNotifierProvider<TeamManagementProvider>(
+        create: (context) => TeamManagementProvider(
+          addTeamMember: context.read<AddTeamMember>(),
+          updateTeamMember: context.read<UpdateTeamMember>(),
+          searchTeamMembers: context.read<SearchTeamMembers>(),
+          manageAvailability: context.read<ManageTeamMemberAvailability>(),
+          analyzeCapacity: context.read<AnalyzeTeamCapacity>(),
+        ),
+      ),
+      
+      ChangeNotifierProvider<CapacityPlanningProvider>(
+        create: (context) => CapacityPlanningProvider(),
+      ),
+      
+      ChangeNotifierProvider<ConfigurationProvider>(
+        create: (context) => ConfigurationProvider(
+          manageUserConfiguration: context.read<ManageUserConfiguration>(),
         ),
       ),
     ];
