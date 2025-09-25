@@ -810,17 +810,17 @@ void main() {
         // ASSERT
         expect(resolvedAllocations, hasLength(3));
         
-        // Highest priority (9) gets full allocation
+        // Highest priority (9) gets partial allocation (2.5 requested, only 3.0 available)
         final highestPriority = resolvedAllocations[0];
         expect(highestPriority['priority'], equals(9));
-        expect(highestPriority['status'], equals('partial'));
-        expect(highestPriority['allocatedWeeks'], equals(1.0)); // Only 1.0 remaining after 2.0
+        expect(highestPriority['status'], equals('approved'));
+        expect(highestPriority['allocatedWeeks'], equals(2.5)); // Gets full requested amount
 
-        // Medium priority (8) gets partial allocation
+        // Medium priority (8) gets partial allocation (remaining capacity: 3.0 - 2.5 = 0.5)
         final mediumPriority = resolvedAllocations[1];
         expect(mediumPriority['priority'], equals(8));
-        expect(mediumPriority['status'], equals('approved'));
-        expect(mediumPriority['allocatedWeeks'], equals(2.0));
+        expect(mediumPriority['status'], equals('partial'));
+        expect(mediumPriority['allocatedWeeks'], equals(0.5));
 
         // Lowest priority (7) gets rejected
         final lowestPriority = resolvedAllocations[2];
@@ -832,7 +832,7 @@ void main() {
         final totalAllocated = resolvedAllocations.fold<double>(
           0.0, (sum, a) => sum + (a['allocatedWeeks'] as double)
         );
-        expect(totalAllocated, equals(3.0));
+        expect(totalAllocated, equals(3.0)); // 2.5 + 0.5 + 0.0 = 3.0
         expect(totalAllocated, lessThanOrEqualTo(availableCapacity));
 
         // TODO: Verify conflict resolution when implementations are available
