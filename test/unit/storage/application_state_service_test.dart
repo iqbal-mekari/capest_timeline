@@ -13,7 +13,27 @@ abstract class ApplicationStateService {
   Future<bool> isStorageAvailable();
 }
 
-class MockApplicationStateService extends Mock implements ApplicationStateService {}
+class MockApplicationStateService extends Mock implements ApplicationStateService {
+  @override
+  Future<Result<void, StorageException>> saveState(ApplicationState state) {
+    throw UnimplementedError('ApplicationStateService.saveState not implemented');
+  }
+
+  @override
+  Future<Result<ApplicationState, StorageException>> restoreState() {
+    throw UnimplementedError('ApplicationStateService.restoreState not implemented');
+  }
+
+  @override
+  Future<Result<void, StorageException>> resetState() {
+    throw UnimplementedError('ApplicationStateService.resetState not implemented');
+  }
+
+  @override
+  Future<bool> isStorageAvailable() {
+    throw UnimplementedError('ApplicationStateService.isStorageAvailable not implemented');
+  }
+}
 
 void main() {
   group('ApplicationStateService Contract Tests', () {

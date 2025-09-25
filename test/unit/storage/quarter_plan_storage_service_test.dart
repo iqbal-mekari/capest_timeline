@@ -13,7 +13,27 @@ abstract class QuarterPlanStorageService {
   Future<Result<void, StorageException>> deleteQuarterPlan(String planId);
 }
 
-class MockQuarterPlanStorageService extends Mock implements QuarterPlanStorageService {}
+class MockQuarterPlanStorageService extends Mock implements QuarterPlanStorageService {
+  @override
+  Future<Result<void, StorageException>> saveQuarterPlan(QuarterPlan plan) {
+    throw UnimplementedError('QuarterPlanStorageService.saveQuarterPlan not implemented');
+  }
+
+  @override
+  Future<Result<QuarterPlan?, StorageException>> loadQuarterPlan(String planId) {
+    throw UnimplementedError('QuarterPlanStorageService.loadQuarterPlan not implemented');
+  }
+
+  @override
+  Future<Result<List<QuarterPlanMetadata>, StorageException>> listQuarterPlans() {
+    throw UnimplementedError('QuarterPlanStorageService.listQuarterPlans not implemented');
+  }
+
+  @override
+  Future<Result<void, StorageException>> deleteQuarterPlan(String planId) {
+    throw UnimplementedError('QuarterPlanStorageService.deleteQuarterPlan not implemented');
+  }
+}
 
 /// Metadata for quarter plan list operations
 class QuarterPlanMetadata {

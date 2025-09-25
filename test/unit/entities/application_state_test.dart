@@ -10,8 +10,7 @@
 library;
 
 import 'package:test/test.dart';
-
-import '../../../lib/features/configuration/domain/entities/application_state.dart';
+import 'package:capest_timeline/features/configuration/domain/entities/application_state.dart';
 
 void main() {
   group('ApplicationState Entity Tests', () {

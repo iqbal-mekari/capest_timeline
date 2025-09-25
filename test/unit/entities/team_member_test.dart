@@ -8,9 +8,8 @@
 library;
 
 import 'package:test/test.dart';
-
-import '../../../lib/core/enums/role.dart';
-import '../../../lib/features/team_management/domain/entities/team_member.dart';
+import 'package:capest_timeline/core/enums/role.dart';
+import 'package:capest_timeline/features/team_management/domain/entities/team_member.dart';
 
 void main() {
   group('TeamMember Entity Tests', () {

@@ -284,7 +284,7 @@ class CTANumberField extends StatelessWidget {
                   icon: const Icon(Icons.keyboard_arrow_up, size: 16),
                   padding: EdgeInsets.zero,
                   style: IconButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   ),
                 ),
               ),
@@ -297,7 +297,7 @@ class CTANumberField extends StatelessWidget {
                   icon: const Icon(Icons.keyboard_arrow_down, size: 16),
                   padding: EdgeInsets.zero,
                   style: IconButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   ),
                 ),
               ),

@@ -81,11 +81,11 @@ test/
 - [x] T015 [P] Unit test ApplicationState entity in test/unit/entities/application_state_test.dart
 
 ### Integration Tests
-- [ ] T016 [P] Integration test quarter plan creation in test/integration/quarter_plan_creation_test.dart
-- [ ] T017 [P] Integration test team member management in test/integration/team_member_management_test.dart
-- [ ] T018 [P] Integration test capacity allocation workflow in test/integration/capacity_allocation_test.dart
-- [ ] T019 [P] Integration test drag-and-drop operations in test/integration/drag_drop_test.dart
-- [ ] T020 [P] Integration test state persistence in test/integration/state_persistence_test.dart
+- [x] T016 [P] Integration test quarter plan creation in test/integration/quarter_plan_creation_test.dart
+- [x] T017 [P] Integration test team member management in test/integration/team_member_management_test.dart
+- [x] T018 [P] Integration test capacity allocation workflow in test/integration/capacity_allocation_test.dart
+- [x] T019 [P] Integration test drag-and-drop operations in test/integration/drag_drop_test.dart
+- [x] T020 [P] Integration test state persistence in test/integration/state_persistence_test.dart
 
 ## Phase 3.3: Core Implementation (ONLY after tests are failing)
 
@@ -121,27 +121,27 @@ test/
 - [x] T041 [P] Configuration repository implementation in lib/features/configuration/data/repositories/configuration_repository_impl.dart
 
 ## Phase 3.5: State Management and Presentation
-- [ ] T042 CapacityPlanningProvider in lib/features/capacity_planning/presentation/providers/capacity_planning_provider.dart
-- [ ] T043 TeamManagementProvider in lib/features/team_management/presentation/providers/team_management_provider.dart
-- [ ] T044 ConfigurationProvider in lib/features/configuration/presentation/providers/configuration_provider.dart
+- [x] T042 CapacityPlanningProvider in lib/features/capacity_planning/presentation/providers/capacity_planning_provider.dart
+- [x] T043 TeamManagementProvider in lib/features/team_management/presentation/providers/team_management_provider.dart
+- [x] T044 ConfigurationProvider in lib/features/configuration/presentation/providers/configuration_provider.dart
 
 ## Phase 3.6: UI Components and Screens
 - [x] T045 [P] TimelineWidget in lib/features/capacity_planning/presentation/widgets/timeline_widget.dart
 - [x] T046 [P] DragDropAllocationWidget in lib/features/capacity_planning/presentation/widgets/drag_drop_allocation_widget.dart
-- [ ] T047 [P] TeamMemberCard in lib/features/team_management/presentation/widgets/team_member_card.dart
-- [ ] T048 [P] InitiativeCard in lib/features/capacity_planning/presentation/widgets/initiative_card.dart
-- [ ] T049 MainScreen with navigation in lib/features/capacity_planning/presentation/screens/main_screen.dart
+- [x] T047 [P] TeamMemberCard in lib/features/team_management/presentation/widgets/team_member_card.dart
+- [x] T048 [P] InitiativeCard in lib/features/capacity_planning/presentation/widgets/initiative_card.dart
+- [x] T049 MainScreen with navigation in lib/features/capacity_planning/presentation/screens/main_screen.dart
 
 ## Phase 3.7: Integration and Wiring
 - [x] T050 Dependency injection setup in lib/core/di/service_locator.dart
 - [x] T051 Provider setup in main.dart
-- [ ] T052 Auto-save timer implementation in lib/features/configuration/presentation/providers/auto_save_provider.dart
+- [x] T052 Auto-save timer implementation in lib/features/configuration/presentation/providers/auto_save_provider.dart
 
 ## Phase 3.8: Polish and Validation
 - [x] T053 [P] Performance optimization for large datasets in lib/features/capacity_planning/presentation/widgets/virtualized_timeline.dart
-- [ ] T054 [P] Accessibility improvements and semantic labels
-- [ ] T055 [P] Error boundary widget in lib/shared/widgets/error_boundary.dart
-- [ ] T056 [P] Loading states and progress indicators
+- [x] T054 [P] Accessibility improvements and semantic labels
+- [x] T055 [P] Error boundary widget in lib/shared/widgets/error_boundary.dart
+- [x] T056 [P] Loading states and progress indicators
 - [ ] T057 Manual testing execution following quickstart.md scenarios
 - [ ] T058 Performance benchmarking for <200ms drag operations
 

@@ -9,10 +9,8 @@
 library;
 
 import 'package:test/test.dart';
-
-import '../../../lib/core/enums/role.dart';
-
-import '../../../lib/features/capacity_planning/domain/entities/capacity_allocation.dart';
+import 'package:capest_timeline/core/enums/role.dart';
+import 'package:capest_timeline/features/capacity_planning/domain/entities/capacity_allocation.dart';
 
 void main() {
   group('CapacityAllocation Entity Tests', () {

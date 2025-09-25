@@ -9,9 +9,8 @@
 library;
 
 import 'package:test/test.dart';
-
-import '../../../lib/core/enums/role.dart';
-import '../../../lib/features/capacity_planning/domain/entities/initiative.dart';
+import 'package:capest_timeline/core/enums/role.dart';
+import 'package:capest_timeline/features/capacity_planning/domain/entities/initiative.dart';
 
 void main() {
   group('Initiative Entity Tests', () {
@@ -618,7 +617,8 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error.allErrors.join(' '), contains('Estimated effort (8.0) does not match sum of role efforts (5.0)'));
+        final errorMessage = result.error.allErrors.join(' ');
+        expect(errorMessage, matches(r'Estimated effort \(8(?:\.0)?\) does not match sum of role efforts \(5(?:\.0)?\)'));
       });
 
       test('should fail validation for self-referencing dependencies', () {
@@ -933,7 +933,7 @@ void main() {
         // Assert
         expect(stringRep, contains('init037'));
         expect(stringRep, contains('String Test Initiative'));
-        expect(stringRep, contains('effort: 6.0w'));
+        expect(stringRep, matches(r'effort: 6(?:\.0)?w'));
         expect(stringRep, contains('priority: 8'));
         expect(stringRep, contains('Backend'));
         expect(stringRep, contains('Frontend'));

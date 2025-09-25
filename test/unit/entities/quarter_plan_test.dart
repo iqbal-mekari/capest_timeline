@@ -9,12 +9,11 @@
 library;
 
 import 'package:test/test.dart';
-
-import '../../../lib/core/enums/role.dart';
-import '../../../lib/features/capacity_planning/domain/entities/quarter_plan.dart';
-import '../../../lib/features/capacity_planning/domain/entities/initiative.dart';
-import '../../../lib/features/capacity_planning/domain/entities/capacity_allocation.dart';
-import '../../../lib/features/team_management/domain/entities/team_member.dart';
+import 'package:capest_timeline/core/enums/role.dart';
+import 'package:capest_timeline/features/capacity_planning/domain/entities/quarter_plan.dart';
+import 'package:capest_timeline/features/capacity_planning/domain/entities/initiative.dart';
+import 'package:capest_timeline/features/capacity_planning/domain/entities/capacity_allocation.dart';
+import 'package:capest_timeline/features/team_management/domain/entities/team_member.dart';
 
 void main() {
   group('QuarterPlan Entity Tests', () {

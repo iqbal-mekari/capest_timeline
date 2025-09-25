@@ -13,7 +13,22 @@ abstract class ConfigurationService {
   Future<Result<void, StorageException>> resetConfiguration();
 }
 
-class MockConfigurationService extends Mock implements ConfigurationService {}
+class MockConfigurationService extends Mock implements ConfigurationService {
+  @override
+  Future<Result<void, StorageException>> saveConfiguration(UserConfiguration config) {
+    throw UnimplementedError('ConfigurationService.saveConfiguration not implemented');
+  }
+
+  @override
+  Future<Result<UserConfiguration, StorageException>> loadConfiguration() {
+    throw UnimplementedError('ConfigurationService.loadConfiguration not implemented');
+  }
+
+  @override
+  Future<Result<void, StorageException>> resetConfiguration() {
+    throw UnimplementedError('ConfigurationService.resetConfiguration not implemented');
+  }
+}
 
 void main() {
   group('ConfigurationService Contract Tests', () {

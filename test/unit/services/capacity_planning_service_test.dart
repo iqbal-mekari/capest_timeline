@@ -133,7 +133,74 @@ class AllocationSuggestion {
   final String reasoning;
 }
 
-class MockCapacityPlanningService extends Mock implements CapacityPlanningService {}
+class MockCapacityPlanningService extends Mock implements CapacityPlanningService {
+  @override
+  Future<Result<Initiative, ValidationException>> createInitiative({
+    required String name,
+    required String description,
+    required Map<Role, double> effortByRole,
+    DateTime? deadline,
+  }) {
+    throw UnimplementedError('CapacityPlanningService.createInitiative not implemented');
+  }
+
+  @override
+  Future<Result<Initiative, ValidationException>> updateInitiative(
+    String initiativeId,
+    InitiativeUpdateRequest request,
+  ) {
+    throw UnimplementedError('CapacityPlanningService.updateInitiative not implemented');
+  }
+
+  @override
+  Future<Result<void, ValidationException>> deleteInitiative(String initiativeId) {
+    throw UnimplementedError('CapacityPlanningService.deleteInitiative not implemented');
+  }
+
+  @override
+  Future<Result<CapacityAllocation, ValidationException>> createAllocation({
+    required String teamMemberId,
+    required String initiativeId,
+    required Role role,
+    required double effortWeeks,
+    required int startWeek,
+    required int endWeek,
+  }) {
+    throw UnimplementedError('CapacityPlanningService.createAllocation not implemented');
+  }
+
+  @override
+  Future<Result<CapacityAllocation, ValidationException>> updateAllocation(
+    String allocationId,
+    AllocationUpdateRequest request,
+  ) {
+    throw UnimplementedError('CapacityPlanningService.updateAllocation not implemented');
+  }
+
+  @override
+  Future<Result<void, ValidationException>> deleteAllocation(String allocationId) {
+    throw UnimplementedError('CapacityPlanningService.deleteAllocation not implemented');
+  }
+
+  @override
+  Future<CapacityUtilization> calculateUtilization({
+    required int startWeek,
+    required int endWeek,
+    Role? filterByRole,
+  }) {
+    throw UnimplementedError('CapacityPlanningService.calculateUtilization not implemented');
+  }
+
+  @override
+  Future<List<AllocationConflict>> detectConflicts() {
+    throw UnimplementedError('CapacityPlanningService.detectConflicts not implemented');
+  }
+
+  @override
+  Future<List<AllocationSuggestion>> suggestAllocation(String initiativeId) {
+    throw UnimplementedError('CapacityPlanningService.suggestAllocation not implemented');
+  }
+}
 
 void main() {
   group('CapacityPlanningService Contract Tests', () {

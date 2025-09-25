@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Integration test for drag-and-drop operations in capacity allocation timeline
@@ -121,9 +120,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: Container(
-                child: const Text('Drag-Drop Implementation Placeholder'),
-              ),
+              body: const Text('Drag-Drop Implementation Placeholder'),
             ),
           ),
         );
@@ -163,12 +160,12 @@ void main() {
                     ),
                   ),
                   DragTarget<String>(
-                    onAccept: (data) => droppedData = data,
-                    builder: (context, candidateData, rejectedData) {
+                    onAcceptWithDetails: (details) => droppedData = details.data,
+                    builder: (context, candidateItems, rejectedItems) {
                       return Container(
                         width: 200,
                         height: 100,
-                        color: candidateData.isNotEmpty ? Colors.green : Colors.grey,
+                        color: candidateItems.isNotEmpty ? Colors.green : Colors.grey,
                         child: const Text('Drop Zone'),
                       );
                     },

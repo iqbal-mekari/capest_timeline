@@ -60,7 +60,45 @@ class MemberAvailability {
   final Map<int, List<CapacityAllocation>> existingAllocationsByWeek;
 }
 
-class MockTeamManagementService extends Mock implements TeamManagementService {}
+class MockTeamManagementService extends Mock implements TeamManagementService {
+  @override
+  Future<Result<TeamMember, ValidationException>> addTeamMember({
+    required String name,
+    required Set<Role> roles,
+    required double weeklyCapacity,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) {
+    throw UnimplementedError('TeamManagementService.addTeamMember not implemented');
+  }
+
+  @override
+  Future<Result<TeamMember, ValidationException>> updateTeamMember(
+    String memberId,
+    TeamMemberUpdateRequest request,
+  ) {
+    throw UnimplementedError('TeamManagementService.updateTeamMember not implemented');
+  }
+
+  @override
+  Future<Result<void, ValidationException>> removeTeamMember(String memberId) {
+    throw UnimplementedError('TeamManagementService.removeTeamMember not implemented');
+  }
+
+  @override
+  Future<MemberAvailability> getMemberAvailability(
+    String memberId,
+    int startWeek,
+    int endWeek,
+  ) {
+    throw UnimplementedError('TeamManagementService.getMemberAvailability not implemented');
+  }
+
+  @override
+  Future<List<TeamMember>> getTeamMembersByRole(Role role) {
+    throw UnimplementedError('TeamManagementService.getTeamMembersByRole not implemented');
+  }
+}
 
 void main() {
   group('TeamManagementService Contract Tests', () {
