@@ -330,6 +330,258 @@ class _SkeletonItemState extends State<_SkeletonItem>
   }
 }
 
+/// Timeline loading skeleton specifically for capacity planning
+class CTATimelineLoader extends StatelessWidget {
+  const CTATimelineLoader({
+    super.key,
+    this.weekCount = 13,
+    this.memberCount = 5,
+  });
+
+  final int weekCount;
+  final int memberCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Timeline header skeleton
+          CTAShimmer(
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onSurface.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 16),
+          
+          // Timeline rows skeleton
+          for (int i = 0; i < memberCount; i++) ...[
+            CTAShimmer(
+              child: Row(
+                children: [
+                  // Member info
+                  Container(
+                    width: 200,
+                    height: 60,
+                    margin: const EdgeInsets.only(right: 16),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.onSurface.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  
+                  // Timeline weeks
+                  Expanded(
+                    child: Row(
+                      children: [
+                        for (int j = 0; j < weekCount; j++)
+                          Expanded(
+                            child: Container(
+                              height: 60,
+                              margin: const EdgeInsets.only(right: 2),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.onSurface.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Inline loading indicator for buttons and small components
+class CTAInlineLoader extends StatelessWidget {
+  const CTAInlineLoader({
+    super.key,
+    this.size = 16.0,
+    this.color,
+    this.message,
+  });
+
+  final double size;
+  final Color? color;
+  final String? message;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: size,
+          height: size,
+          child: CircularProgressIndicator(
+            strokeWidth: size / 8,
+            color: color ?? theme.colorScheme.primary,
+          ),
+        ),
+        if (message != null) ...[
+          const SizedBox(width: 8),
+          Text(
+            message!,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// Loading overlay for dialogs and modals
+class CTALoadingOverlay extends StatelessWidget {
+  const CTALoadingOverlay({
+    super.key,
+    required this.isLoading,
+    required this.child,
+    this.message = 'Loading...',
+    this.backgroundColor,
+  });
+
+  final bool isLoading;
+  final Widget child;
+  final String message;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Stack(
+      children: [
+        child,
+        if (isLoading)
+          Container(
+            color: backgroundColor ?? theme.colorScheme.surface.withOpacity(0.8),
+            child: CTALoadingIndicator(
+              message: message,
+              size: 32,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// Card loading skeleton with customizable content
+class CTACardLoader extends StatelessWidget {
+  const CTACardLoader({
+    super.key,
+    this.width,
+    this.height = 120.0,
+    this.hasAvatar = true,
+    this.hasTitle = true,
+    this.hasSubtitle = true,
+    this.hasActions = false,
+  });
+
+  final double? width;
+  final double height;
+  final bool hasAvatar;
+  final bool hasTitle;
+  final bool hasSubtitle;
+  final bool hasActions;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Card(
+      elevation: 2,
+      child: Container(
+        width: width,
+        height: height,
+        padding: const EdgeInsets.all(16),
+        child: CTAShimmer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  if (hasAvatar)
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.onSurface.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  if (hasAvatar) const SizedBox(width: 12),
+                  
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (hasTitle)
+                          Container(
+                            width: double.infinity,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.onSurface.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        if (hasTitle && hasSubtitle) const SizedBox(height: 8),
+                        if (hasSubtitle)
+                          Container(
+                            width: 150,
+                            height: 12,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.onSurface.withOpacity(0.07),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              
+              const Spacer(),
+              
+              if (hasActions)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    width: 80,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.onSurface.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Simple shimmer effect for loading states
 class CTAShimmer extends StatefulWidget {
   const CTAShimmer({

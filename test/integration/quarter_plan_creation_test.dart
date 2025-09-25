@@ -19,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../mocks/mock_quarter_plan_repository.dart';
 import '../mocks/mock_application_state_repository.dart';
 import '../mocks/mock_capacity_planning_service.dart';
-import '../test_helpers/integration_test_helpers.dart';
 
 void main() {
   group('Quarter Plan Creation Integration Tests', () {

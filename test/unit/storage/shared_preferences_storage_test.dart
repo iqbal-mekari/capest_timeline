@@ -493,7 +493,8 @@ void main() {
           }
         };
 
-        // Expected new format after migration (will be used when migration logic is implemented)
+        // TODO: Expected new format after migration (will be used when migration logic is implemented)
+        /*
         final expectedNewFormat = {
           'version': '2.0',
           'quarter_plan': {
@@ -523,6 +524,7 @@ void main() {
             ]
           }
         };
+        */
         // TODO: Use expectedNewFormat for validation when migration is implemented
 
         // ACT - Store old format data

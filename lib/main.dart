@@ -17,6 +17,9 @@ import 'features/configuration/presentation/providers/configuration_provider.dar
 // Screens
 import 'screens/main_screen.dart';
 
+// Shared widgets
+import 'shared/widgets/error_boundary.dart';
+
 void main() async {
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,19 +35,27 @@ class CapacityTimelineApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: ServiceProviders.createProviders(),
-      child: Consumer<ConfigurationProvider>(
-        builder: (context, configProvider, child) {
-          return MaterialApp(
-            title: 'Capacity Timeline',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: _getThemeMode(configProvider.theme),
-            home: const MainScreen(),
-          );
-        },
+    return ErrorBoundary(
+      errorTitle: 'Application Error',
+      errorMessage: 'The Capacity Timeline app encountered an unexpected error.',
+      onError: (error, stackTrace) {
+        // TODO: Log error to analytics/crash reporting service
+        debugPrint('App-level error: $error');
+      },
+      child: MultiProvider(
+        providers: ServiceProviders.createProviders(),
+        child: Consumer<ConfigurationProvider>(
+          builder: (context, configProvider, child) {
+            return MaterialApp(
+              title: 'Capacity Timeline',
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: _getThemeMode(configProvider.theme),
+              home: const MainScreen(),
+            );
+          },
+        ),
       ),
     );
   }

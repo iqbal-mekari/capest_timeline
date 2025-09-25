@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import '../../domain/entities/capacity_allocation.dart';
 import '../../domain/entities/initiative.dart';
 import '../../../team_management/domain/entities/team_member.dart';
-import '../../../../core/enums/role.dart';
 import '../../../../shared/themes/app_theme.dart';
 
 /// A draggable widget representing a capacity allocation that can be moved

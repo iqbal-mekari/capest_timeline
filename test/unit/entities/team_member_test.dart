@@ -10,8 +10,6 @@ library;
 import 'package:test/test.dart';
 
 import '../../../lib/core/enums/role.dart';
-import '../../../lib/core/types/result.dart';
-import '../../../lib/core/errors/exceptions.dart';
 import '../../../lib/features/team_management/domain/entities/team_member.dart';
 
 void main() {
@@ -224,7 +222,7 @@ void main() {
           id: 'tm013',
           name: 'Maya Rodriguez',
           email: 'maya@company.com',
-          roles: {Role.design, Role.design},
+          roles: {Role.design, Role.frontend},
           weeklyCapacity: 1.0,
         );
 
@@ -412,7 +410,7 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error!.allErrors.join(' '), contains('Team member ID cannot be empty'));
+        expect(result.error.allErrors.join(' '), contains('Team member ID cannot be empty'));
       });
 
       test('should fail validation for empty name', () {
@@ -430,7 +428,7 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error!.allErrors.join(' '), contains('Team member name cannot be empty'));
+        expect(result.error.allErrors.join(' '), contains('Team member name cannot be empty'));
       });
 
       test('should fail validation for invalid email', () {
@@ -448,7 +446,7 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error!.allErrors.join(' '), contains('Team member email is not valid'));
+        expect(result.error.allErrors.join(' '), contains('Team member email is not valid'));
       });
 
       test('should fail validation for empty roles', () {
@@ -466,7 +464,7 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error!.allErrors.join(' '), contains('Team member must have at least one role'));
+        expect(result.error.allErrors.join(' '), contains('Team member must have at least one role'));
       });
 
       test('should fail validation for invalid weekly capacity', () {
@@ -493,10 +491,10 @@ void main() {
 
         // Assert
         expect(result1.isError, isTrue);
-        expect(result1.error!.allErrors.join(' '), 
+        expect(result1.error.allErrors.join(' '), 
                contains('Weekly capacity must be between 0 and 1.0'));
         expect(result2.isError, isTrue);
-        expect(result2.error!.allErrors.join(' '), 
+        expect(result2.error.allErrors.join(' '), 
                contains('Weekly capacity must be between 0 and 1.0'));
       });
 
@@ -526,10 +524,10 @@ void main() {
 
         // Assert
         expect(result1.isError, isTrue);
-        expect(result1.error!.allErrors.join(' '), 
+        expect(result1.error.allErrors.join(' '), 
                contains('Skill level must be between 1 and 10'));
         expect(result2.isError, isTrue);
-        expect(result2.error!.allErrors.join(' '), 
+        expect(result2.error.allErrors.join(' '), 
                contains('Skill level must be between 1 and 10'));
       });
 
@@ -555,7 +553,7 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error!.allErrors.join(' '), 
+        expect(result.error.allErrors.join(' '), 
                contains('start date must be before end date'));
       });
 
@@ -587,7 +585,7 @@ void main() {
 
         // Assert
         expect(result.isError, isTrue);
-        expect(result.error!.allErrors.join(' '), 
+        expect(result.error.allErrors.join(' '), 
                contains('Unavailable periods cannot overlap'));
       });
     });

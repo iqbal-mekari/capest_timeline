@@ -20,7 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../mocks/mock_quarter_plan_repository.dart';
 import '../mocks/mock_application_state_repository.dart';
 import '../mocks/mock_capacity_planning_service.dart';
-import '../test_helpers/integration_test_helpers.dart';
 
 void main() {
   group('Team Member Management Integration Tests', () {
@@ -147,14 +146,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Pre-populate with existing team member
-        final existingMember = IntegrationTestHelpers.generateMockQuarterPlan(
-          teamMemberCount: 1,
-          initiativeCount: 0,
-        ).teamMembers.first;
+        // TODO: Implement team member update workflow when edit operations are available
 
         // ACT: Update team member workflow
         // TODO: Replace with actual update workflow when implemented
-        // Will use existingMember for edit operations when UI is implemented
         
         // Step 1: Navigate to team member list
         // await tester.tap(find.byKey(const Key('team_members_tab')));
@@ -194,14 +189,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Pre-populate with team member who has allocations
-        final planWithAllocations = IntegrationTestHelpers.generateMockQuarterPlan(
-          teamMemberCount: 2,
-          initiativeCount: 2,
-        );
+        // TODO: Generate mock quarter plan with allocations for removal testing
 
         // ACT: Remove team member workflow with allocation handling
         // TODO: Replace with actual removal workflow when implemented
-        // Will use planWithAllocations.teamMembers for removal operations when UI is implemented
         
         // Step 1: Navigate to team member list
         // await tester.tap(find.byKey(const Key('team_members_tab')));
@@ -285,14 +276,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Pre-populate with team member
-        final existingPlan = IntegrationTestHelpers.generateMockQuarterPlan(
-          teamMemberCount: 1,
-          initiativeCount: 1,
-        );
+        // TODO: Generate mock quarter plan for role change testing
 
         // ACT: Change role workflow
         // TODO: Replace with actual role change workflow when implemented
-        // Will use existingPlan.teamMembers for role change operations when UI is implemented
         
         // Step 1: Navigate to member details
         // final member = existingPlan.teamMembers.first;
@@ -338,14 +325,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Pre-populate with multiple team members
-        final planWithMembers = IntegrationTestHelpers.generateMockQuarterPlan(
-          teamMemberCount: 5,
-          initiativeCount: 0,
-        );
+        // TODO: Generate mock quarter plan for bulk operations testing
 
         // ACT: Bulk role assignment workflow
         // TODO: Replace with actual bulk operations when implemented
-        // Will use planWithMembers.teamMembers for bulk operations when UI is implemented
         
         // Step 1: Enter bulk edit mode
         // await tester.tap(find.byKey(const Key('bulk_edit_button')));
@@ -425,14 +408,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Create plan with member and multiple initiatives
-        final complexPlan = IntegrationTestHelpers.generateMockQuarterPlan(
-          teamMemberCount: 1,
-          initiativeCount: 3,
-        );
+        // TODO: Generate mock quarter plan for capacity management testing
 
         // ACT: Capacity management workflow
         // TODO: Replace with actual capacity management when implemented
-        // Will use complexPlan.teamMembers and complexPlan.initiatives for capacity management when UI is implemented
         
         // Step 1: Navigate to capacity view for member
         // final member = complexPlan.teamMembers.first;
@@ -605,16 +584,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Create and save team member
-        final testMember = MockTeamMember(
-          id: 'persist_test_001',
-          name: 'Persistence Test Member',
-          role: 'QA Engineer',
-          capacity: 75.0,
-        );
+        // TODO: Create mock team member for persistence testing
 
         // ACT: Simulate app restart
         // TODO: Replace with actual persistence when implemented
-        // Will use testMember for persistence testing when addTeamMember helper is implemented
         
         // Step 1: Save team member data
         // await addTeamMember(tester, testMember);
@@ -819,18 +792,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Pre-populate with diverse team
-        final diverseTeam = List.generate(20, (index) {
-          return MockTeamMember(
-            id: 'search_test_$index',
-            name: TestDataGenerator.sampleMemberNames[index % TestDataGenerator.sampleMemberNames.length],
-            role: TestDataGenerator.sampleRoles[index % TestDataGenerator.sampleRoles.length],
-            capacity: 60.0 + (index * 2),
-          );
-        });
+        // TODO: Generate diverse team mock data for search/filter testing
 
         // ACT: Test search and filtering
         // TODO: Replace with actual search when implemented
-        // Will use diverseTeam for search/filter testing when UI components are implemented
         
         // Step 1: Test name search
         // await tester.enterText(find.byKey(const Key('member_search_field')), 'Alice');

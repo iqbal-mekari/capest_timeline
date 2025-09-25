@@ -6,6 +6,7 @@ import '../features/configuration/presentation/providers/configuration_provider.
 import '../features/capacity_planning/presentation/providers/capacity_planning_provider.dart';
 import '../features/team_management/presentation/widgets/team_member_card.dart';
 import '../features/capacity_planning/presentation/widgets/initiative_card.dart';
+import '../shared/widgets/loading_states.dart';
 
 /// Main application screen that provides navigation and layout for capacity planning features.
 ///
@@ -117,42 +118,19 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return Consumer<TeamManagementProvider>(
       builder: (context, provider, child) {
         if (provider.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const CTASkeletonLoader(
+            itemCount: 5,
+            itemHeight: 100.0,
           );
         }
 
         if (provider.teamMembers.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.group_outlined,
-                  size: 64,
-                  color: Colors.grey.shade400,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No team members found',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Add team members to start capacity planning',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey.shade600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: _addTeamMember,
-                  icon: const Icon(Icons.person_add),
-                  label: const Text('Add Team Member'),
-                ),
-              ],
-            ),
+          return CTAEmptyState(
+            icon: Icons.group_outlined,
+            title: 'No team members found',
+            message: 'Add team members to start capacity planning',
+            actionLabel: 'Add Team Member',
+            onAction: _addTeamMember,
           );
         }
 
@@ -242,36 +220,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         final initiatives = provider.currentPlan?.initiatives ?? [];
         
         if (initiatives.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.assignment_outlined,
-                  size: 64,
-                  color: Colors.grey.shade400,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No initiatives found',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Create your first initiative to start capacity planning',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey.shade600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: _createInitiative,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Create Initiative'),
-                ),
-              ],
-            ),
+          return CTAEmptyState(
+            icon: Icons.assignment_outlined,
+            title: 'No initiatives found',
+            message: 'Create your first initiative to start capacity planning',
+            actionLabel: 'Create Initiative',
+            onAction: _createInitiative,
           );
         }
 
@@ -466,12 +420,30 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   // Action methods
-  void _refreshData() {
-    context.read<TeamManagementProvider>().loadTeamMembers();
+  void _refreshData() async {
+    // Show loading indicator
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: const [
+            CTAInlineLoader(size: 16),
+            SizedBox(width: 12),
+            Text('Refreshing data...'),
+          ],
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
     
+    // Refresh data
+    await context.read<TeamManagementProvider>().loadTeamMembers();
+    await context.read<ConfigurationProvider>().loadConfiguration();
+    
+    // Hide loading and show success
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Data refreshed'),
+        content: Text('Data refreshed successfully'),
         duration: Duration(seconds: 2),
       ),
     );

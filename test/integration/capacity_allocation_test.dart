@@ -56,7 +56,6 @@ void main() {
     late DateTime testEndDate;
     late Map<String, dynamic> testTeamMember;
     late Map<String, dynamic> testInitiative;
-    late Map<String, dynamic> testQuarterPlan;
     late Map<String, dynamic> testAllocation;
 
     setUp(() {
@@ -95,15 +94,6 @@ void main() {
         },
         'estimatedEffortWeeks': 6.0,
         'dependencies': <String>[],
-      };
-
-      testQuarterPlan = {
-        'id': 'qp001',
-        'quarter': 3,
-        'year': 2024,
-        'initiatives': [testInitiative],
-        'teamMembers': [testTeamMember],
-        'allocations': <Map<String, dynamic>>[],
       };
 
       testAllocation = {

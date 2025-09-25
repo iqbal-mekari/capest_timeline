@@ -44,8 +44,8 @@ void main() {
         // Assert
         expect(saveResult.isSuccess, true);
         expect(loadResult.isSuccess, true);
-        expect(loadResult.value?.theme, AppThemeMode.dark);
-        expect(loadResult.value?.autoSaveInterval, 60);
+        expect(loadResult.value.theme, AppThemeMode.dark);
+        expect(loadResult.value.autoSaveInterval, 60);
       });
 
       test('should reset to default configuration', () async {
@@ -63,8 +63,8 @@ void main() {
         // Assert
         expect(resetResult.isSuccess, true);
         expect(loadResult.isSuccess, true);
-        expect(loadResult.value?.theme, AppThemeMode.system);
-        expect(loadResult.value?.autoSaveInterval, 30);
+        expect(loadResult.value.theme, AppThemeMode.system);
+        expect(loadResult.value.autoSaveInterval, 30);
       });
     });
 
@@ -84,9 +84,9 @@ void main() {
         // Assert
         expect(saveResult.isSuccess, true);
         expect(restoreResult.isSuccess, true);
-        expect(restoreResult.value?.currentPlanId, 'Q1-2025');
-        expect(restoreResult.value?.selectedQuarter, 1);
-        expect(restoreResult.value?.selectedYear, 2025);
+        expect(restoreResult.value.currentPlanId, 'Q1-2025');
+        expect(restoreResult.value.selectedQuarter, 1);
+        expect(restoreResult.value.selectedYear, 2025);
       });
 
       test('should reset application state', () async {
@@ -105,10 +105,10 @@ void main() {
         // Assert
         expect(resetResult.isSuccess, true);
         expect(restoreResult.isSuccess, true);
-        expect(restoreResult.value?.currentPlanId, isNull);
-        expect(restoreResult.value?.selectedQuarter, isNull);
-        expect(restoreResult.value?.selectedYear, isNull);
-        expect(restoreResult.value?.hasUnsavedChanges, false);
+        expect(restoreResult.value.currentPlanId, isNull);
+        expect(restoreResult.value.selectedQuarter, isNull);
+        expect(restoreResult.value.selectedYear, isNull);
+        expect(restoreResult.value.hasUnsavedChanges, false);
       });
     });
 
@@ -167,9 +167,9 @@ void main() {
 
         // Assert
         expect(listResult.isSuccess, true);
-        expect(listResult.value?.length, 2);
+        expect(listResult.value.length, 2);
         
-        final planIds = listResult.value?.map((metadata) => metadata.id).toList();
+        final planIds = listResult.value.map((metadata) => metadata.id).toList();
         expect(planIds, contains('Q1-2025'));
         expect(planIds, contains('Q2-2025'));
       });

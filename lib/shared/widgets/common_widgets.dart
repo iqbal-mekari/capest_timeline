@@ -7,5 +7,6 @@ library shared_widgets;
 // Export all widget files
 export 'buttons.dart';
 export 'cards.dart';
+export 'error_boundary.dart';
 export 'form_fields.dart';
 export 'loading_states.dart';

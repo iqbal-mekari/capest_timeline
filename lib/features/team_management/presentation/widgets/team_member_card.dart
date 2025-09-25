@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../domain/entities/team_member.dart';
-import '../../../../core/enums/role.dart';
 import '../../../../shared/themes/app_theme.dart';
 
 /// A card widget that displays team member information with interactive capabilities.
@@ -75,7 +74,6 @@ class _TeamMemberCardState extends State<TeamMemberCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _elevationAnimation;
-  bool _isHovered = false;
 
   @override
   void initState() {
@@ -105,10 +103,6 @@ class _TeamMemberCardState extends State<TeamMemberCard>
   }
 
   void _handleHover(bool isHovered) {
-    setState(() {
-      _isHovered = isHovered;
-    });
-
     if (isHovered) {
       _animationController.forward();
     } else {
