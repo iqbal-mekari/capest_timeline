@@ -144,7 +144,7 @@ class _DragDropAllocationWidgetState extends State<DragDropAllocationWidget>
     widget.onDragStarted();
   }
 
-  void _handleDragEnd(DragEndDetails details) {
+  void _handleDragEnd(Velocity velocity, Offset offset, bool wasAccepted) {
     setState(() {
       _isDragging = false;
       _dragOffset = null;
@@ -153,6 +153,11 @@ class _DragDropAllocationWidgetState extends State<DragDropAllocationWidget>
     // Reset animations
     _scaleController.reverse();
     
+    // Convert to DragEndDetails for the callback
+    final details = DragEndDetails(
+      velocity: velocity,
+      primaryVelocity: velocity.pixelsPerSecond.dx,
+    );
     widget.onDragEnd(details);
   }
 
@@ -340,7 +345,9 @@ class _DragDropAllocationWidgetState extends State<DragDropAllocationWidget>
                 child: _buildAllocationContent(),
               ),
               onDragStarted: _handleDragStart,
-              onDragEnd: _handleDragEnd,
+              onDragEnd: (details) {
+                _handleDragEnd(details.velocity, details.offset, true);
+              },
               onDragUpdate: _handleDragUpdate,
               child: GestureDetector(
                 onDoubleTap: () {

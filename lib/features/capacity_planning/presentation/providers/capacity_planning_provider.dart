@@ -258,7 +258,11 @@ class CapacityPlanningProvider extends ChangeNotifier {
       // Check if team member can fulfill the role
       if (!teamMember.canFulfillRole(dragData.allocation.role)) {
         _dragValidationErrors[targetKey] = [
-          ExceptionFactory.invalidRoleAllocation(teamMember.name, dragData.allocation.role.displayName)
+          ValidationException(
+            'Cannot allocate ${teamMember.name} to ${dragData.allocation.role.displayName} role: '
+            'team member does not have this role capability.',
+            ValidationErrorType.businessRuleViolation,
+          )
         ];
         continue;
       }
