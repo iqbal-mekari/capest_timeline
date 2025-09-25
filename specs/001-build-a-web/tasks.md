@@ -75,10 +75,10 @@ test/
 
 ### Entity Tests
 - [x] T011 [P] Unit test Initiative entity in test/unit/entities/initiative_test.dart
-- [ ] T012 [P] Unit test TeamMember entity in test/unit/entities/team_member_test.dart
-- [ ] T013 [P] Unit test CapacityAllocation entity in test/unit/entities/capacity_allocation_test.dart
-- [ ] T014 [P] Unit test QuarterPlan entity in test/unit/entities/quarter_plan_test.dart
-- [ ] T015 [P] Unit test ApplicationState entity in test/unit/entities/application_state_test.dart
+- [x] T012 [P] Unit test TeamMember entity in test/unit/entities/team_member_test.dart
+- [x] T013 [P] Unit test CapacityAllocation entity in test/unit/entities/capacity_allocation_test.dart
+- [x] T014 [P] Unit test QuarterPlan entity in test/unit/entities/quarter_plan_test.dart
+- [x] T015 [P] Unit test ApplicationState entity in test/unit/entities/application_state_test.dart
 
 ### Integration Tests
 - [ ] T016 [P] Integration test quarter plan creation in test/integration/quarter_plan_creation_test.dart
@@ -90,35 +90,35 @@ test/
 ## Phase 3.3: Core Implementation (ONLY after tests are failing)
 
 ### Core Entities and Enums
-- [ ] T021 [P] Role enum in lib/core/enums/role.dart
-- [ ] T022 [P] Initiative entity in lib/features/capacity_planning/domain/entities/initiative.dart
-- [ ] T023 [P] TeamMember entity in lib/features/team_management/domain/entities/team_member.dart
-- [ ] T024 [P] CapacityAllocation entity in lib/features/capacity_planning/domain/entities/capacity_allocation.dart
-- [ ] T025 [P] QuarterPlan entity in lib/features/capacity_planning/domain/entities/quarter_plan.dart
-- [ ] T026 [P] ApplicationState entity in lib/features/configuration/domain/entities/application_state.dart
-- [ ] T027 [P] UserConfiguration entity in lib/features/configuration/domain/entities/user_configuration.dart
+- [x] T021 [P] Role enum in lib/core/enums/role.dart
+- [x] T022 [P] Initiative entity in lib/features/capacity_planning/domain/entities/initiative.dart
+- [x] T023 [P] TeamMember entity in lib/features/team_management/domain/entities/team_member.dart
+- [x] T024 [P] CapacityAllocation entity in lib/features/capacity_planning/domain/entities/capacity_allocation.dart
+- [x] T025 [P] QuarterPlan entity in lib/features/capacity_planning/domain/entities/quarter_plan.dart
+- [x] T026 [P] ApplicationState entity in lib/features/configuration/domain/entities/application_state.dart
+- [x] T027 [P] UserConfiguration entity in lib/features/configuration/domain/entities/user_configuration.dart
 
 ### Result and Exception Types
-- [ ] T028 [P] Result type for error handling in lib/core/types/result.dart
-- [ ] T029 [P] StorageException and ValidationException in lib/core/errors/exceptions.dart
+- [x] T028 [P] Result type for error handling in lib/core/types/result.dart
+- [x] T029 [P] StorageException and ValidationException in lib/core/errors/exceptions.dart
 
 ### Repository Interfaces
-- [ ] T030 [P] QuarterPlanRepository interface in lib/features/capacity_planning/domain/repositories/quarter_plan_repository.dart
-- [ ] T031 [P] ApplicationStateRepository interface in lib/features/configuration/domain/repositories/application_state_repository.dart
-- [ ] T032 [P] ConfigurationRepository interface in lib/features/configuration/domain/repositories/configuration_repository.dart
+- [x] T030 [P] QuarterPlanRepository interface in lib/features/capacity_planning/domain/repositories/quarter_plan_repository.dart
+- [x] T031 [P] ApplicationStateRepository interface in lib/features/configuration/domain/repositories/application_state_repository.dart
+- [x] T032 [P] ConfigurationRepository interface in lib/features/configuration/domain/repositories/configuration_repository.dart
 
 ### Use Cases
-- [ ] T033 [P] CreateInitiative use case in lib/features/capacity_planning/domain/usecases/create_initiative.dart
-- [ ] T034 [P] AddTeamMember use case in lib/features/team_management/domain/usecases/add_team_member.dart
-- [ ] T035 [P] CreateAllocation use case in lib/features/capacity_planning/domain/usecases/create_allocation.dart
-- [ ] T036 [P] CalculateUtilization use case in lib/features/capacity_planning/domain/usecases/calculate_utilization.dart
-- [ ] T037 [P] DetectConflicts use case in lib/features/capacity_planning/domain/usecases/detect_conflicts.dart
+- [x] T033 [P] CreateInitiative use case in lib/features/capacity_planning/domain/usecases/create_initiative.dart
+- [x] T034 [P] AddTeamMember use case in lib/features/team_management/domain/usecases/add_team_member.dart
+- [x] T035 [P] CreateAllocation use case in lib/features/capacity_planning/domain/usecases/create_allocation.dart
+- [x] T036 [P] CalculateUtilization use case in lib/features/capacity_planning/domain/usecases/calculate_utilization.dart
+- [x] T037 [P] DetectConflicts use case in lib/features/capacity_planning/domain/usecases/detect_conflicts.dart
 
 ## Phase 3.4: Data Layer Implementation
-- [ ] T038 [P] Local storage data source in lib/features/configuration/data/datasources/local_storage_data_source.dart
-- [ ] T039 [P] QuarterPlan repository implementation in lib/features/capacity_planning/data/repositories/quarter_plan_repository_impl.dart
-- [ ] T040 [P] ApplicationState repository implementation in lib/features/configuration/data/repositories/application_state_repository_impl.dart
-- [ ] T041 [P] Configuration repository implementation in lib/features/configuration/data/repositories/configuration_repository_impl.dart
+- [x] T038 [P] Local storage data source in lib/features/configuration/data/datasources/local_storage_data_source.dart
+- [x] T039 [P] QuarterPlan repository implementation in lib/features/capacity_planning/data/repositories/quarter_plan_repository_impl.dart
+- [x] T040 [P] ApplicationState repository implementation in lib/features/configuration/data/repositories/application_state_repository_impl.dart
+- [x] T041 [P] Configuration repository implementation in lib/features/configuration/data/repositories/configuration_repository_impl.dart
 
 ## Phase 3.5: State Management and Presentation
 - [ ] T042 CapacityPlanningProvider in lib/features/capacity_planning/presentation/providers/capacity_planning_provider.dart
@@ -126,19 +126,19 @@ test/
 - [ ] T044 ConfigurationProvider in lib/features/configuration/presentation/providers/configuration_provider.dart
 
 ## Phase 3.6: UI Components and Screens
-- [ ] T045 [P] TimelineWidget in lib/features/capacity_planning/presentation/widgets/timeline_widget.dart
-- [ ] T046 [P] DragDropAllocationWidget in lib/features/capacity_planning/presentation/widgets/drag_drop_allocation_widget.dart
+- [x] T045 [P] TimelineWidget in lib/features/capacity_planning/presentation/widgets/timeline_widget.dart
+- [x] T046 [P] DragDropAllocationWidget in lib/features/capacity_planning/presentation/widgets/drag_drop_allocation_widget.dart
 - [ ] T047 [P] TeamMemberCard in lib/features/team_management/presentation/widgets/team_member_card.dart
 - [ ] T048 [P] InitiativeCard in lib/features/capacity_planning/presentation/widgets/initiative_card.dart
 - [ ] T049 MainScreen with navigation in lib/features/capacity_planning/presentation/screens/main_screen.dart
 
 ## Phase 3.7: Integration and Wiring
-- [ ] T050 Dependency injection setup in lib/core/di/service_locator.dart
-- [ ] T051 Provider setup in main.dart
+- [x] T050 Dependency injection setup in lib/core/di/service_locator.dart
+- [x] T051 Provider setup in main.dart
 - [ ] T052 Auto-save timer implementation in lib/features/configuration/presentation/providers/auto_save_provider.dart
 
 ## Phase 3.8: Polish and Validation
-- [ ] T053 [P] Performance optimization for large datasets in lib/features/capacity_planning/presentation/widgets/virtualized_timeline.dart
+- [x] T053 [P] Performance optimization for large datasets in lib/features/capacity_planning/presentation/widgets/virtualized_timeline.dart
 - [ ] T054 [P] Accessibility improvements and semantic labels
 - [ ] T055 [P] Error boundary widget in lib/shared/widgets/error_boundary.dart
 - [ ] T056 [P] Loading states and progress indicators

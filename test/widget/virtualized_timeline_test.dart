@@ -151,7 +151,7 @@ void main() {
 
       // Verify week headers are present
       expect(find.text('W1'), findsOneWidget);
-      expect(find.textContaining('7/1'), findsOneWidget);
+      expect(find.text('7/1'), findsOneWidget);
     });
 
     testWidgets('handles empty quarter plan gracefully', (tester) async {

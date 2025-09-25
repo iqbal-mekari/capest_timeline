@@ -7,6 +7,7 @@ import '../../domain/entities/application_state.dart';
 import '../../domain/entities/user_configuration.dart';
 import '../../domain/repositories/configuration_repository.dart';
 import '../datasources/local_storage_data_source.dart';
+import '../datasources/local_storage_platform.dart';
 
 class ConfigurationRepositoryImpl implements ConfigurationRepository {
   final LocalStorageDataSource _dataSource;

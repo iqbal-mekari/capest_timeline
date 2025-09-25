@@ -5,7 +5,7 @@ import 'dart:math' as math;
 import '../../domain/entities/capacity_allocation.dart';
 import '../../domain/entities/quarter_plan.dart';
 import '../../../team_management/domain/entities/team_member.dart';
-import 'timeline_widget.dart';
+
 import '../../../../shared/widgets/loading_states.dart';
 import '../../../../core/enums/role.dart';
 
@@ -253,10 +253,9 @@ class _VirtualizedTimelineWidgetState extends State<VirtualizedTimelineWidget> {
               ),
             ),
           
-          // Scrollable week headers
+          // Scrollable week headers - use separate controller for header
           Expanded(
             child: SingleChildScrollView(
-              controller: _horizontalController,
               scrollDirection: Axis.horizontal,
               child: Container(
                 width: totalWidth,
@@ -327,7 +326,6 @@ class _VirtualizedTimelineWidgetState extends State<VirtualizedTimelineWidget> {
             Container(
               width: widget.memberColumnWidth,
               child: SingleChildScrollView(
-                controller: _verticalController,
                 child: Container(
                   height: totalHeight,
                   child: Stack(
@@ -568,21 +566,90 @@ class _VirtualizedTimelineWidgetState extends State<VirtualizedTimelineWidget> {
   @override
   Widget build(BuildContext context) {
     if (!widget.enableVirtualization) {
-      // Fall back to regular timeline widget if virtualization is disabled
-      return TimelineWidget(
-        quarterPlan: widget.quarterPlan,
-        showWeekNumbers: widget.showWeekNumbers,
-        showTeamMemberNames: widget.showTeamMemberNames,
-        cellWidth: widget.cellWidth,
-        cellHeight: widget.cellHeight,
-        headerHeight: widget.headerHeight,
-      );
+      // Simple fallback when virtualization is disabled
+      return _buildSimpleTimeline();
     }
 
     return Column(
       children: [
         _buildVirtualizedHeader(),
         _buildVirtualizedBody(),
+      ],
+    );
+  }
+
+  Widget _buildSimpleTimeline() {
+    if (_activeMembers == null || _totalWeeks == null) {
+      return const CTATimelineLoader();
+    }
+
+    return Column(
+      children: [
+        // Simple header
+        Container(
+          height: widget.headerHeight,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            border: Border(
+              bottom: BorderSide(color: Colors.grey.shade300),
+            ),
+          ),
+          child: const Center(
+            child: Text('Team Members', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ),
+        
+        // Simple body
+        Expanded(
+          child: ListView.builder(
+            itemCount: _activeMembers!.length,
+            itemBuilder: (context, index) {
+              final member = _activeMembers![index];
+              return Container(
+                height: widget.cellHeight,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey.shade300),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: widget.memberColumnWidth,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            member.name,
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            member.roles.map((r) => r.displayName).join(', '),
+                            style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey.shade50,
+                        child: const Center(
+                          child: Text('Simple Timeline View', style: TextStyle(fontSize: 10)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
