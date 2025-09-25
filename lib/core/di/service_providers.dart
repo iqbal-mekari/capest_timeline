@@ -30,19 +30,84 @@ import '../../features/configuration/domain/usecases/configuration_usecases.dart
 // Integration use cases
 import '../usecases/integration_usecases.dart';
 
+// Service implementations
+import '../../services/storage/configuration_service.dart';
+import '../../services/storage/application_state_service.dart';
+import '../../services/storage/quarter_plan_storage_service.dart';
+import '../../services/business/team_management_service.dart';
+import '../../services/business/capacity_planning_service.dart';
+
+// Data sources
+import '../../features/configuration/data/datasources/local_storage_datasource.dart';
+
 /// Service locator for managing application dependencies
 class ServiceProviders {
   ServiceProviders._();
 
-  /// Creates all provider configurations for the application
+  /// Creates a list of Provider instances for dependency injection.
   /// 
-  /// This method returns a list of providers that should be used with
+  /// This creates all the providers needed for the application, including:
+  /// - Repositories (for data access)
+  /// - Use cases (for business logic)  
+  /// - Services (for application state management)
+  /// 
+  /// All providers depend on SharedPreferences which must be initialized first
+  /// using ServiceProviders.initialize().
+  /// 
+  /// Returns a list of Provider instances suitable for use with
   /// MultiProvider to inject all required dependencies.
   static List<Provider> createProviders() {
+    // Ensure SharedPreferences is initialized
+    if (_sharedPreferences == null) {
+      throw StateError(
+        'ServiceProviders not initialized. Call ServiceProviders.initialize() first.'
+      );
+    }
+    
     return [
       // Core services
       Provider<SharedPreferences>.value(
         value: _sharedPreferences!,
+      ),
+      
+      // Data sources
+      Provider<LocalStorageDataSource>(
+        create: (context) => LocalStorageDataSource(
+          preferences: context.read<SharedPreferences>(),
+        ),
+      ),
+      
+      // Storage services
+      Provider<ConfigurationService>(
+        create: (context) => ConfigurationServiceFactory.create(
+          storageDataSource: context.read<LocalStorageDataSource>(),
+        ),
+      ),
+      
+      Provider<ApplicationStateService>(
+        create: (context) => ApplicationStateServiceFactory.create(
+          storageDataSource: context.read<LocalStorageDataSource>(),
+        ),
+      ),
+      
+      Provider<QuarterPlanStorageService>(
+        create: (context) => QuarterPlanStorageServiceImpl(
+          dataSource: context.read<LocalStorageDataSource>(),
+        ),
+      ),
+      
+      // Business services
+      Provider<TeamManagementService>(
+        create: (context) => TeamManagementServiceFactory.create(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<CapacityPlanningService>(
+        create: (context) => CapacityPlanningServiceFactory.create(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
       ),
       
       // Repositories
@@ -256,6 +321,18 @@ extension ServiceProvidersContext on BuildContext {
   BackupAndRestoreData get backupAndRestoreData => read<BackupAndRestoreData>();
   MigrateApplicationData get migrateApplicationData => read<MigrateApplicationData>();
   BulkDataOperations get bulkDataOperations => read<BulkDataOperations>();
+
+  // Data Sources
+  LocalStorageDataSource get localStorageDataSource => read<LocalStorageDataSource>();
+
+  // Storage Services
+  ConfigurationService get configurationService => read<ConfigurationService>();
+  ApplicationStateService get applicationStateService => read<ApplicationStateService>();
+  QuarterPlanStorageService get quarterPlanStorageService => read<QuarterPlanStorageService>();
+
+  // Business Services
+  TeamManagementService get teamManagementService => read<TeamManagementService>();
+  CapacityPlanningService get capacityPlanningService => read<CapacityPlanningService>();
 }
 
 /// Helper for testing - provides mock implementations

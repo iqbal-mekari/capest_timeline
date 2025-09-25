@@ -190,8 +190,17 @@ void main() {
 }
 
 /// Helper function to create a mock application state for testing
-/// This will be replaced with actual ApplicationState entity once implemented
 ApplicationState _createMockApplicationState() {
-  // This will fail because ApplicationState doesn't exist yet
-  throw UnimplementedError('ApplicationState entity not implemented yet');
+  return ApplicationState(
+    currentPlanId: 'test_plan_001',
+    lastAccessedPlanIds: const ['test_plan_001', 'test_plan_002'],
+    viewMode: ViewMode.timeline,
+    selectedQuarter: 1,
+    selectedYear: 2024,
+    filters: const ApplicationFilters(),
+    isAutoSaveEnabled: true,
+    hasUnsavedChanges: false,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
 }

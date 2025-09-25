@@ -3,6 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:capest_timeline/core/errors/exceptions.dart';
 import 'package:capest_timeline/core/types/result.dart';
 import 'package:capest_timeline/features/configuration/domain/entities/user_configuration.dart';
+import 'package:capest_timeline/shared/themes/app_theme.dart';
 
 /// Mock implementation of ConfigurationService for testing
 /// This will be replaced with actual interface once implemented
@@ -220,20 +221,67 @@ void main() {
 }
 
 /// Helper function to create a mock user configuration for testing
-/// This will be replaced with actual UserConfiguration entity once implemented
 UserConfiguration _createMockUserConfiguration() {
-  // This will fail because UserConfiguration doesn't exist yet
-  throw UnimplementedError('UserConfiguration entity not implemented yet');
+  return UserConfiguration(
+    theme: AppThemeMode.light,
+    defaultQuarterWeeks: 13,
+    defaultWeeklyCapacity: 1.0,
+    enableNotifications: true,
+    autoSaveInterval: 30,
+    showWelcomeGuide: true,
+    defaultViewMode: 'timeline',
+    timeZone: 'UTC',
+    dateFormat: 'yyyy-MM-dd',
+    capacityDisplayMode: CapacityDisplayMode.weeks,
+    initiativeDefaults: const InitiativeDefaults(),
+    teamMemberDefaults: const TeamMemberDefaults(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
 }
 
 /// Helper function to create an invalid user configuration for testing
 UserConfiguration _createInvalidUserConfiguration() {
-  // This will fail because UserConfiguration doesn't exist yet
-  throw UnimplementedError('UserConfiguration entity not implemented yet');
+  return UserConfiguration(
+    theme: AppThemeMode.dark,
+    defaultQuarterWeeks: 50, // Invalid: too high
+    defaultWeeklyCapacity: 2.0, // Invalid: greater than 1.0
+    enableNotifications: false,
+    autoSaveInterval: 1, // Invalid: too low
+    showWelcomeGuide: false,
+    defaultViewMode: 'invalid_mode', // Invalid view mode
+    timeZone: 'UTC',
+    dateFormat: 'invalid-format', // Invalid date format
+    capacityDisplayMode: CapacityDisplayMode.percentage,
+    initiativeDefaults: const InitiativeDefaults(),
+    teamMemberDefaults: const TeamMemberDefaults(),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
 }
 
 /// Helper function to create a configuration with specific theme mode
 UserConfiguration _createConfigWithThemeMode() {
-  // This will fail because UserConfiguration doesn't exist yet
-  throw UnimplementedError('UserConfiguration entity not implemented yet');
+  return UserConfiguration(
+    theme: AppThemeMode.dark,
+    defaultQuarterWeeks: 13,
+    defaultWeeklyCapacity: 0.8,
+    enableNotifications: false,
+    autoSaveInterval: 60,
+    showWelcomeGuide: false,
+    defaultViewMode: 'capacity',
+    timeZone: 'America/New_York',
+    dateFormat: 'dd/MM/yyyy',
+    capacityDisplayMode: CapacityDisplayMode.days,
+    initiativeDefaults: const InitiativeDefaults(
+      defaultPriority: 8,
+      defaultBusinessValue: 7,
+    ),
+    teamMemberDefaults: const TeamMemberDefaults(
+      defaultSkillLevel: 7,
+      defaultWeeklyCapacity: 0.8,
+    ),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
 }

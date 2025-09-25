@@ -8,9 +8,13 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:capest_timeline/main.dart';
+import 'package:capest_timeline/core/di/service_providers.dart';
 
 void main() {
   testWidgets('Capacity Timeline app starts correctly', (WidgetTester tester) async {
+    // Initialize service providers first (like main.dart does)
+    await ServiceProviders.initialize();
+    
     // Build our app and trigger a frame.
     await tester.pumpWidget(const CapacityTimelineApp());
 

@@ -178,8 +178,18 @@ void main() {
 }
 
 /// Helper function to create a mock quarter plan for testing
-/// This will be replaced with actual QuarterPlan entity once implemented
 QuarterPlan _createMockQuarterPlan() {
-  // This will fail because QuarterPlan doesn't exist yet
-  throw UnimplementedError('QuarterPlan entity not implemented yet');
+  return QuarterPlan(
+    id: 'test_plan_001',
+    quarter: 1,
+    year: 2024,
+    name: 'Test Quarter Plan',
+    initiatives: const [],
+    teamMembers: const [],
+    allocations: const [],
+    notes: 'Test plan for unit testing',
+    isLocked: false,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
 }
