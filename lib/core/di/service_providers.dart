@@ -30,15 +30,12 @@ import '../../features/configuration/domain/usecases/configuration_usecases.dart
 // Integration use cases
 import '../usecases/integration_usecases.dart';
 
-// Service implementations
-import '../../services/storage/configuration_service.dart';
-import '../../services/storage/application_state_service.dart';
-import '../../services/storage/quarter_plan_storage_service.dart';
+// Service implementations (business services only - storage services removed)
 import '../../services/business/team_management_service.dart';
 import '../../services/business/capacity_planning_service.dart';
 
 // Data sources
-import '../../features/configuration/data/datasources/local_storage_datasource.dart';
+import '../../features/configuration/data/datasources/local_storage_data_source.dart';
 
 /// Service locator for managing application dependencies
 class ServiceProviders {
@@ -72,29 +69,10 @@ class ServiceProviders {
       
       // Data sources
       Provider<LocalStorageDataSource>(
-        create: (context) => LocalStorageDataSource(
-          preferences: context.read<SharedPreferences>(),
-        ),
+        create: (context) => LocalStorageDataSource(),
       ),
       
-      // Storage services
-      Provider<ConfigurationService>(
-        create: (context) => ConfigurationServiceFactory.create(
-          storageDataSource: context.read<LocalStorageDataSource>(),
-        ),
-      ),
-      
-      Provider<ApplicationStateService>(
-        create: (context) => ApplicationStateServiceFactory.create(
-          storageDataSource: context.read<LocalStorageDataSource>(),
-        ),
-      ),
-      
-      Provider<QuarterPlanStorageService>(
-        create: (context) => QuarterPlanStorageServiceImpl(
-          dataSource: context.read<LocalStorageDataSource>(),
-        ),
-      ),
+      // Note: Storage services removed - repositories now handle persistence directly
       
       // Business services
       Provider<TeamManagementService>(
@@ -125,7 +103,7 @@ class ServiceProviders {
       
       Provider<ConfigurationRepository>(
         create: (context) => ConfigurationRepositoryImpl(
-          context.read<SharedPreferences>(),
+          context.read<LocalStorageDataSource>(),
         ),
       ),
       
@@ -325,10 +303,7 @@ extension ServiceProvidersContext on BuildContext {
   // Data Sources
   LocalStorageDataSource get localStorageDataSource => read<LocalStorageDataSource>();
 
-  // Storage Services
-  ConfigurationService get configurationService => read<ConfigurationService>();
-  ApplicationStateService get applicationStateService => read<ApplicationStateService>();
-  QuarterPlanStorageService get quarterPlanStorageService => read<QuarterPlanStorageService>();
+  // Note: Storage services removed - use repositories directly
 
   // Business Services
   TeamManagementService get teamManagementService => read<TeamManagementService>();

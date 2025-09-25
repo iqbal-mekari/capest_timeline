@@ -1,43 +1,37 @@
 import 'dart:convert';
 import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/types/result.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../shared/themes/app_theme.dart';
 import '../../domain/entities/application_state.dart';
 import '../../domain/entities/user_configuration.dart';
 import '../../domain/repositories/configuration_repository.dart';
+import '../datasources/local_storage_data_source.dart';
 
 class ConfigurationRepositoryImpl implements ConfigurationRepository {
-  final SharedPreferences _prefs;
+  final LocalStorageDataSource _dataSource;
   
-  // Storage keys
-  static const String _appStateKey = 'application_state';
-  static const String _userConfigKey = 'user_configuration';
-  static const String _sessionRecoveryKey = 'session_recovery';
-  static const String _metadataKey = 'configuration_metadata';
-  
-  const ConfigurationRepositoryImpl(this._prefs);
+  const ConfigurationRepositoryImpl(this._dataSource);
 
   // Application State Operations
   
   @override
   Future<Result<void, StorageException>> saveApplicationState(ApplicationState state) async {
     try {
-      final success = await _prefs.setString(_appStateKey, jsonEncode(state.toMap()));
-      if (!success) {
-        return Result.error(StorageException(
-          'Failed to save application state',
-          StorageErrorType.unknown,
-        ));
+      final result = await _dataSource.store(
+        StorageKeys.applicationState,
+        state.toMap(),
+      );
+
+      if (result.isError) {
+        return Result.error(result.error);
       }
 
-      // Update metadata
+      // Update metadata after save
       await _updateMetadata();
 
       return const Result.success(null);
-    } catch (e) {
-      return Result.error(StorageException(
+    } catch (e) {      return Result.error(StorageException(
         'Failed to save application state: $e',
         StorageErrorType.unknown,
       ));
@@ -47,12 +41,17 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   @override
   Future<Result<ApplicationState?, StorageException>> loadApplicationState() async {
     try {
-      final jsonString = _prefs.getString(_appStateKey);
-      if (jsonString == null) {
+      final result = await _dataSource.retrieve(StorageKeys.applicationState);
+      
+      if (result.isError) {
+        return Result.error(result.error);
+      }
+
+      final stateData = result.value;
+      if (stateData == null) {
         return const Result.success(null);
       }
 
-      final Map<String, dynamic> stateData = jsonDecode(jsonString);
       final state = ApplicationState.fromMap(stateData);
       return Result.success(state);
     } catch (e) {
@@ -65,8 +64,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
 
   @override
   Future<Result<void, StorageException>> updateCurrentPlan(String? planId) async {
-    try {
-      final stateResult = await loadApplicationState();
+    try {      final stateResult = await loadApplicationState();
       if (stateResult.isError) {
         return Result.error(stateResult.error);
       }
@@ -103,8 +101,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
       );
 
       return await saveApplicationState(updatedState);
-    } catch (e) {
-      return Result.error(StorageException(
+    } catch (e) {      return Result.error(StorageException(
         'Failed to update view settings: $e',
         StorageErrorType.unknown,
       ));
@@ -141,9 +138,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
       final stateResult = await loadApplicationState();
       if (stateResult.isError) {
         return Result.error(stateResult.error);
-      }
-
-      final currentState = stateResult.value ?? ApplicationState();
+      }      final currentState = stateResult.value ?? ApplicationState();
       final updatedState = currentState.withCurrentPlan(planId);
 
       return await saveApplicationState(updatedState);
@@ -180,8 +175,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   }
 
   @override
-  Future<Result<void, StorageException>> markAsChanged() async {
-    try {
+  Future<Result<void, StorageException>> markAsChanged() async {    try {
       final stateResult = await loadApplicationState();
       if (stateResult.isError) {
         return Result.error(stateResult.error);
@@ -221,18 +215,18 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
 
   // User Configuration Operations
 
-  @override
-  Future<Result<void, StorageException>> saveUserConfiguration(UserConfiguration config) async {
+  @override  Future<Result<void, StorageException>> saveUserConfiguration(UserConfiguration config) async {
     try {
-      final success = await _prefs.setString(_userConfigKey, jsonEncode(config.toMap()));
-      if (!success) {
-        return Result.error(StorageException(
-          'Failed to save user configuration',
-          StorageErrorType.unknown,
-        ));
+      final result = await _dataSource.store(
+        StorageKeys.userConfiguration,
+        config.toMap(),
+      );
+
+      if (result.isError) {
+        return Result.error(result.error);
       }
 
-      // Update metadata
+      // Update metadata after save
       await _updateMetadata();
 
       return const Result.success(null);
@@ -247,16 +241,20 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   @override
   Future<Result<UserConfiguration?, StorageException>> loadUserConfiguration() async {
     try {
-      final jsonString = _prefs.getString(_userConfigKey);
-      if (jsonString == null) {
+      final result = await _dataSource.retrieve(StorageKeys.userConfiguration);
+      
+      if (result.isError) {
+        return Result.error(result.error);
+      }
+
+      final configData = result.value;
+      if (configData == null) {
         return const Result.success(null);
       }
 
-      final Map<String, dynamic> configData = jsonDecode(jsonString);
       final config = UserConfiguration.fromMap(configData);
       return Result.success(config);
-    } catch (e) {
-      return Result.error(StorageException(
+    } catch (e) {      return Result.error(StorageException(
         'Failed to load user configuration: $e',
         StorageErrorType.dataCorrupted,
       ));
@@ -295,8 +293,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
       }
 
       final currentConfig = configResult.value ?? UserConfiguration();
-      final updatedConfig = currentConfig.copyWith(
-        enableNotifications: enableNotifications,
+      final updatedConfig = currentConfig.copyWith(        enableNotifications: enableNotifications,
         updatedAt: DateTime.now(),
       );
 
@@ -333,8 +330,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   }
 
   @override
-  Future<Result<void, StorageException>> updateInitiativeDefaults(InitiativeDefaults defaults) async {
-    try {
+  Future<Result<void, StorageException>> updateInitiativeDefaults(InitiativeDefaults defaults) async {    try {
       final configResult = await loadUserConfiguration();
       if (configResult.isError) {
         return Result.error(configResult.error);
@@ -383,8 +379,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
     String? defaultViewMode,
     String? dateFormat,
     CapacityDisplayMode? capacityDisplayMode,
-  }) async {
-    try {
+  }) async {    try {
       final configResult = await loadUserConfiguration();
       if (configResult.isError) {
         return Result.error(configResult.error);
@@ -412,12 +407,13 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   @override
   Future<Result<void, StorageException>> saveSessionRecovery(SessionRecoveryData data) async {
     try {
-      final success = await _prefs.setString(_sessionRecoveryKey, jsonEncode(data.toMap()));
-      if (!success) {
-        return Result.error(StorageException(
-          'Failed to save session recovery data',
-          StorageErrorType.unknown,
-        ));
+      final result = await _dataSource.store(
+        StorageKeys.sessionRecovery,
+        data.toMap(),
+      );
+
+      if (result.isError) {
+        return Result.error(result.error);
       }
 
       return const Result.success(null);
@@ -430,14 +426,18 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   }
 
   @override
-  Future<Result<SessionRecoveryData?, StorageException>> loadSessionRecovery() async {
-    try {
-      final jsonString = _prefs.getString(_sessionRecoveryKey);
-      if (jsonString == null) {
+  Future<Result<SessionRecoveryData?, StorageException>> loadSessionRecovery() async {    try {
+      final result = await _dataSource.retrieve(StorageKeys.sessionRecovery);
+      
+      if (result.isError) {
+        return Result.error(result.error);
+      }
+
+      final recoveryData = result.value;
+      if (recoveryData == null) {
         return const Result.success(null);
       }
 
-      final Map<String, dynamic> recoveryData = jsonDecode(jsonString);
       final data = SessionRecoveryData.fromMap(recoveryData);
       return Result.success(data);
     } catch (e) {
@@ -451,7 +451,12 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   @override
   Future<Result<void, StorageException>> clearSessionRecovery() async {
     try {
-      await _prefs.remove(_sessionRecoveryKey);
+      final result = await _dataSource.remove(StorageKeys.sessionRecovery);
+      
+      if (result.isError) {
+        return Result.error(result.error);
+      }
+
       return const Result.success(null);
     } catch (e) {
       return Result.error(StorageException(
@@ -471,8 +476,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
 
       final data = recoveryResult.value;
       return Result.success(data != null && data.isRecent && data.hasUnsavedWork);
-    } catch (e) {
-      return Result.error(StorageException(
+    } catch (e) {      return Result.error(StorageException(
         'Failed to check recoverable session: $e',
         StorageErrorType.unknown,
       ));
@@ -509,9 +513,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   @override
   Future<Result<void, StorageException>> restoreFromBackup(String backupData) async {
     try {
-      final Map<String, dynamic> backup = jsonDecode(backupData);
-
-      // Restore application state if present
+      final Map<String, dynamic> backup = jsonDecode(backupData);      // Restore application state if present
       if (backup['applicationState'] != null) {
         final stateData = backup['applicationState'] as Map<String, dynamic>;
         final state = ApplicationState.fromMap(stateData);
@@ -550,34 +552,34 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
     }
   }
 
-  @override
-  Future<Result<ConfigurationMetadata, StorageException>> getConfigurationMetadata() async {
+  @override  Future<Result<ConfigurationMetadata, StorageException>> getConfigurationMetadata() async {
     try {
-      final jsonString = _prefs.getString(_metadataKey);
-      if (jsonString != null) {
-        final Map<String, dynamic> metadataData = jsonDecode(jsonString);
+      final result = await _dataSource.retrieve(StorageKeys.configurationMetadata);
+      
+      if (result.isSuccess && result.value != null) {
+        final metadataData = result.value!;
         final metadata = ConfigurationMetadata.fromMap(metadataData);
         return Result.success(metadata);
       }
 
       // Generate metadata if not exists
       final now = DateTime.now();
-      final hasAppState = _prefs.containsKey(_appStateKey);
-      final hasUserConfig = _prefs.containsKey(_userConfigKey);
-      final hasSessionRecovery = _prefs.containsKey(_sessionRecoveryKey);
+      final hasAppState = await _dataSource.exists(StorageKeys.applicationState);
+      final hasUserConfig = await _dataSource.exists(StorageKeys.userConfiguration);
+      final hasSessionRecovery = await _dataSource.exists(StorageKeys.sessionRecovery);
 
       final metadata = ConfigurationMetadata(
         version: 1,
         createdAt: now,
         lastModified: now,
-        hasApplicationState: hasAppState,
-        hasUserConfiguration: hasUserConfig,
-        hasSessionRecovery: hasSessionRecovery,
-        dataSize: _calculateDataSize(),
+        hasApplicationState: hasAppState.valueOrNull ?? false,
+        hasUserConfiguration: hasUserConfig.valueOrNull ?? false,
+        hasSessionRecovery: hasSessionRecovery.valueOrNull ?? false,
+        dataSize: await _calculateDataSize(),
       );
 
       // Save the generated metadata
-      await _prefs.setString(_metadataKey, jsonEncode(metadata.toMap()));
+      await _dataSource.store(StorageKeys.configurationMetadata, metadata.toMap());
 
       return Result.success(metadata);
     } catch (e) {
@@ -590,8 +592,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
 
   // Utility Operations
 
-  @override
-  Future<Result<void, ValidationException>> validateConfiguration(UserConfiguration config) async {
+  @override  Future<Result<void, ValidationException>> validateConfiguration(UserConfiguration config) async {
     return config.validate();
   }
 
@@ -599,10 +600,10 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   Future<Result<void, StorageException>> resetToDefaults() async {
     try {
       // Clear all existing data
-      await _prefs.remove(_appStateKey);
-      await _prefs.remove(_userConfigKey);
-      await _prefs.remove(_sessionRecoveryKey);
-      await _prefs.remove(_metadataKey);
+      await _dataSource.remove(StorageKeys.applicationState);
+      await _dataSource.remove(StorageKeys.userConfiguration);
+      await _dataSource.remove(StorageKeys.sessionRecovery);
+      await _dataSource.remove(StorageKeys.configurationMetadata);
 
       // Save default configuration
       final defaultConfig = UserConfiguration();
@@ -624,8 +625,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
       // In the future, implement actual migration logic
       await _updateMetadata(version: toVersion);
       return const Result.success(null);
-    } catch (e) {
-      return Result.error(StorageException(
+    } catch (e) {      return Result.error(StorageException(
         'Failed to migrate configuration: $e',
         StorageErrorType.unknown,
       ));
@@ -667,12 +667,11 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   }
 
   @override
-  Future<Result<void, StorageException>> clearAllConfiguration() async {
-    try {
-      await _prefs.remove(_appStateKey);
-      await _prefs.remove(_userConfigKey);
-      await _prefs.remove(_sessionRecoveryKey);
-      await _prefs.remove(_metadataKey);
+  Future<Result<void, StorageException>> clearAllConfiguration() async {    try {
+      await _dataSource.remove(StorageKeys.applicationState);
+      await _dataSource.remove(StorageKeys.userConfiguration);
+      await _dataSource.remove(StorageKeys.sessionRecovery);
+      await _dataSource.remove(StorageKeys.configurationMetadata);
       return const Result.success(null);
     } catch (e) {
       return Result.error(StorageException(
@@ -687,54 +686,53 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   Future<void> _updateMetadata({int? version}) async {
     try {
       final now = DateTime.now();
-      final hasAppState = _prefs.containsKey(_appStateKey);
-      final hasUserConfig = _prefs.containsKey(_userConfigKey);
-      final hasSessionRecovery = _prefs.containsKey(_sessionRecoveryKey);
+      final hasAppState = await _dataSource.exists(StorageKeys.applicationState);
+      final hasUserConfig = await _dataSource.exists(StorageKeys.userConfiguration);
+      final hasSessionRecovery = await _dataSource.exists(StorageKeys.sessionRecovery);
 
       // Try to load existing metadata to preserve creation date
       DateTime createdAt = now;
-      try {
-        final existingJsonString = _prefs.getString(_metadataKey);
-        if (existingJsonString != null) {
-          final existingData = jsonDecode(existingJsonString) as Map<String, dynamic>;
+      final existingResult = await _dataSource.retrieve(StorageKeys.configurationMetadata);
+      if (existingResult.isSuccess && existingResult.value != null) {
+        try {
+          final existingData = existingResult.value!;
           createdAt = DateTime.parse(existingData['createdAt'] as String);
+        } catch (_) {
+          // Use current time if can't parse existing
         }
-      } catch (_) {
-        // Use current time if can't load existing
       }
 
       final metadata = ConfigurationMetadata(
         version: version ?? 1,
         createdAt: createdAt,
-        lastModified: now,
-        hasApplicationState: hasAppState,
-        hasUserConfiguration: hasUserConfig,
-        hasSessionRecovery: hasSessionRecovery,
-        dataSize: _calculateDataSize(),
+        lastModified: now,        hasApplicationState: hasAppState.valueOrNull ?? false,
+        hasUserConfiguration: hasUserConfig.valueOrNull ?? false,
+        hasSessionRecovery: hasSessionRecovery.valueOrNull ?? false,
+        dataSize: await _calculateDataSize(),
       );
 
-      await _prefs.setString(_metadataKey, jsonEncode(metadata.toMap()));
+      await _dataSource.store(StorageKeys.configurationMetadata, metadata.toMap());
     } catch (_) {
       // Ignore metadata update failures - not critical
     }
   }
 
-  int _calculateDataSize() {
+  Future<int> _calculateDataSize() async {
     int size = 0;
     
-    final appStateData = _prefs.getString(_appStateKey);
-    if (appStateData != null) {
-      size += appStateData.length;
+    final appStateResult = await _dataSource.retrieve(StorageKeys.applicationState);
+    if (appStateResult.isSuccess && appStateResult.value != null) {
+      size += jsonEncode(appStateResult.value!).length;
     }
     
-    final userConfigData = _prefs.getString(_userConfigKey);
-    if (userConfigData != null) {
-      size += userConfigData.length;
+    final userConfigResult = await _dataSource.retrieve(StorageKeys.userConfiguration);
+    if (userConfigResult.isSuccess && userConfigResult.value != null) {
+      size += jsonEncode(userConfigResult.value!).length;
     }
     
-    final sessionRecoveryData = _prefs.getString(_sessionRecoveryKey);
-    if (sessionRecoveryData != null) {
-      size += sessionRecoveryData.length;
+    final sessionRecoveryResult = await _dataSource.retrieve(StorageKeys.sessionRecovery);
+    if (sessionRecoveryResult.isSuccess && sessionRecoveryResult.value != null) {
+      size += jsonEncode(sessionRecoveryResult.value!).length;
     }
     
     return size;
