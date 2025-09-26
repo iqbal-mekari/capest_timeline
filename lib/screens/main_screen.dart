@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// Provider imports
+import '../features/capacity_planning/presentation/providers/capacity_planning_provider.dart';
 import '../features/team_management/presentation/providers/team_management_provider.dart';
 import '../features/configuration/presentation/providers/configuration_provider.dart';
-import '../features/capacity_planning/presentation/providers/capacity_planning_provider.dart';
+
+// Widget imports
 import '../features/team_management/presentation/widgets/team_member_card.dart';
 import '../features/capacity_planning/presentation/widgets/initiative_card.dart';
 import '../shared/widgets/loading_states.dart';
 
-/// Main application screen that provides navigation and layout for capacity planning features.
-///
-/// This screen serves as the primary interface for:
-/// - Team member management and allocation
-/// - Initiative tracking and capacity planning
-/// - Application configuration and settings
+/// Main screen with full Provider integration
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -420,33 +418,64 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   // Action methods
-  void _refreshData() async {
+  void _refreshData() {
+    if (!mounted) return;
+    
     // Show loading indicator
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Row(
-          children: const [
+          children: [
             CTAInlineLoader(size: 16),
             SizedBox(width: 12),
             Text('Refreshing data...'),
           ],
         ),
-        duration: const Duration(seconds: 3),
+        duration: Duration(seconds: 3),
       ),
     );
+    
+    // Perform async refresh
+    _performRefresh();
+  }
+
+  Future<void> _performRefresh() async {
+    // Store the context to avoid async gaps
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final theme = Theme.of(context);
+    
+    // Get providers before async calls
+    final teamProvider = context.read<TeamManagementProvider>();
+    final configProvider = context.read<ConfigurationProvider>();
     
     // Refresh data
-    await context.read<TeamManagementProvider>().loadTeamMembers();
-    await context.read<ConfigurationProvider>().loadConfiguration();
-    
-    // Hide loading and show success
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Data refreshed successfully'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    try {
+      await teamProvider.loadTeamMembers();
+      await configProvider.loadConfiguration();
+      
+      // Show success if still mounted
+      if (mounted) {
+        scaffoldMessenger.hideCurrentSnackBar();
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(
+            content: Text('Data refreshed successfully'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      // Show error if still mounted
+      if (mounted) {
+        scaffoldMessenger.hideCurrentSnackBar();
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Failed to refresh data: $e'),
+            backgroundColor: theme.colorScheme.error,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 
   void _openSettings() {
