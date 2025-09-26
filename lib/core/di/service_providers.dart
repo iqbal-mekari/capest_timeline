@@ -1,0 +1,354 @@
+/// Service providers for dependency injection using Provider package.
+/// 
+/// This file contains all the Provider configurations needed to inject
+/// repositories, use cases, and other services throughout the application.
+library;
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Repository interfaces
+import '../../features/capacity_planning/domain/repositories/capacity_planning_repository.dart';
+import '../../features/team_management/domain/repositories/team_management_repository.dart';
+import '../../features/configuration/domain/repositories/configuration_repository.dart';
+
+// Repository implementations
+import '../../features/capacity_planning/data/repositories/capacity_planning_repository_impl.dart';
+import '../../features/team_management/data/repositories/team_management_repository_impl.dart';
+import '../../features/configuration/data/repositories/configuration_repository_impl.dart';
+
+// Individual use cases - Capacity Planning
+import '../../features/capacity_planning/domain/usecases/capacity_planning_usecases.dart';
+
+// Individual use cases - Team Management  
+import '../../features/team_management/domain/usecases/team_management_usecases.dart';
+
+// Individual use cases - Configuration
+import '../../features/configuration/domain/usecases/configuration_usecases.dart';
+
+// Integration use cases
+import '../usecases/integration_usecases.dart';
+
+// Service implementations (business services only - storage services removed)
+import '../../services/business/team_management_service.dart';
+import '../../services/business/capacity_planning_service.dart';
+
+// Data sources
+import '../../features/configuration/data/datasources/local_storage_data_source.dart';
+
+// Presentation providers
+import '../../features/capacity_planning/presentation/providers/capacity_planning_provider.dart';
+import '../../features/team_management/presentation/providers/team_management_provider.dart';
+import '../../features/configuration/presentation/providers/configuration_provider.dart';
+
+/// Service locator for managing application dependencies
+class ServiceProviders {
+  ServiceProviders._();
+
+  /// Creates a list of Provider instances for dependency injection.
+  /// 
+  /// This creates all the providers needed for the application, including:
+  /// - Repositories (for data access)
+  /// - Use cases (for business logic)  
+  /// - Services (for application state management)
+  /// - Presentation providers (for UI state management)
+  /// 
+  /// All providers depend on SharedPreferences which must be initialized first
+  /// using ServiceProviders.initialize().
+  /// 
+  /// Returns a list of Provider instances suitable for use with
+  /// MultiProvider to inject all required dependencies.
+  static List<SingleChildWidget> createProviders() {
+    // Ensure SharedPreferences is initialized
+    if (_sharedPreferences == null) {
+      throw StateError(
+        'ServiceProviders not initialized. Call ServiceProviders.initialize() first.'
+      );
+    }
+    
+    return [
+      // Core services
+      Provider<SharedPreferences>.value(
+        value: _sharedPreferences!,
+      ),
+      
+      // Data sources
+      Provider<LocalStorageDataSource>(
+        create: (context) => LocalStorageDataSource(),
+      ),
+      
+      // Note: Storage services removed - repositories now handle persistence directly
+      
+      // Business services
+      Provider<TeamManagementService>(
+        create: (context) => TeamManagementServiceFactory.create(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<CapacityPlanningService>(
+        create: (context) => CapacityPlanningServiceFactory.create(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      // Repositories
+      Provider<CapacityPlanningRepository>(
+        create: (context) => CapacityPlanningRepositoryImpl(
+          context.read<SharedPreferences>(),
+        ),
+      ),
+      
+      Provider<TeamManagementRepository>(
+        create: (context) => TeamManagementRepositoryImpl(
+          context.read<SharedPreferences>(),
+        ),
+      ),
+      
+      Provider<ConfigurationRepository>(
+        create: (context) => ConfigurationRepositoryImpl(
+          context.read<LocalStorageDataSource>(),
+        ),
+      ),
+      
+      // Individual use cases - Capacity Planning
+      Provider<CreateQuarterPlan>(
+        create: (context) => CreateQuarterPlan(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<LoadQuarterPlan>(
+        create: (context) => LoadQuarterPlan(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+        ),
+      ),
+      
+      Provider<AddInitiativeToPlan>(
+        create: (context) => AddInitiativeToPlan(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+        ),
+      ),
+      
+      Provider<AllocateCapacity>(
+        create: (context) => AllocateCapacity(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<GetCapacityAnalytics>(
+        create: (context) => GetCapacityAnalytics(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      // Individual use cases - Team Management
+      Provider<AddTeamMember>(
+        create: (context) => AddTeamMember(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<UpdateTeamMember>(
+        create: (context) => UpdateTeamMember(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<ManageTeamMemberAvailability>(
+        create: (context) => ManageTeamMemberAvailability(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<AnalyzeTeamCapacity>(
+        create: (context) => AnalyzeTeamCapacity(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      Provider<SearchTeamMembers>(
+        create: (context) => SearchTeamMembers(
+          teamRepository: context.read<TeamManagementRepository>(),
+        ),
+      ),
+      
+      // Individual use cases - Configuration
+      Provider<ManageApplicationState>(
+        create: (context) => ManageApplicationState(
+          configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      Provider<ManageUserConfiguration>(
+        create: (context) => ManageUserConfiguration(
+          configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      Provider<InitializeApplication>(
+        create: (context) => InitializeApplication(
+          configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      // Integration use cases
+      Provider<BackupAndRestoreData>(
+        create: (context) => BackupAndRestoreData(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+          configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      Provider<MigrateApplicationData>(
+        create: (context) => MigrateApplicationData(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+          configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      Provider<BulkDataOperations>(
+        create: (context) => BulkDataOperations(
+          capacityRepository: context.read<CapacityPlanningRepository>(),
+          teamRepository: context.read<TeamManagementRepository>(),
+          configRepository: context.read<ConfigurationRepository>(),
+        ),
+      ),
+      
+      // Presentation providers
+      ChangeNotifierProvider<TeamManagementProvider>(
+        create: (context) => TeamManagementProvider(
+          addTeamMember: context.read<AddTeamMember>(),
+          updateTeamMember: context.read<UpdateTeamMember>(),
+          searchTeamMembers: context.read<SearchTeamMembers>(),
+          manageAvailability: context.read<ManageTeamMemberAvailability>(),
+          analyzeCapacity: context.read<AnalyzeTeamCapacity>(),
+        ),
+      ),
+      
+      ChangeNotifierProvider<CapacityPlanningProvider>(
+        create: (context) => CapacityPlanningProvider(),
+      ),
+      
+      ChangeNotifierProvider<ConfigurationProvider>(
+        create: (context) => ConfigurationProvider(
+          manageUserConfiguration: context.read<ManageUserConfiguration>(),
+        ),
+      ),
+    ];
+  }
+
+  /// Creates ProxyProvider configurations for complex dependencies
+  /// 
+  /// Some services might need multiple dependencies or complex initialization.
+  /// This method provides ProxyProvider configurations for such cases.
+  static List<ProxyProvider> createProxyProviders() {
+    return [
+      // Example: If we need a service that depends on multiple repositories
+      // ProxyProvider3<CapacityPlanningRepository, TeamManagementRepository, ConfigurationRepository, SomeComplexService>(
+      //   update: (context, capacityRepo, teamRepo, configRepo, previous) =>
+      //       SomeComplexService(capacityRepo, teamRepo, configRepo),
+      // ),
+    ];
+  }
+
+  // Static instance to hold SharedPreferences
+  static SharedPreferences? _sharedPreferences;
+
+  /// Initialize the service providers
+  /// 
+  /// This must be called before creating providers, typically in main().
+  static Future<void> initialize() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  /// Get SharedPreferences instance
+  /// 
+  /// Throws if not initialized.
+  static SharedPreferences get sharedPreferences {
+    if (_sharedPreferences == null) {
+      throw StateError('ServiceProviders not initialized. Call initialize() first.');
+    }
+    return _sharedPreferences!;
+  }
+
+  /// Dispose resources
+  /// 
+  /// Call this when the app is shutting down to clean up resources.
+  static void dispose() {
+    // Currently no resources need explicit disposal
+    // But this method is here for future use
+  }
+}
+
+/// Extension methods for easier access to services from BuildContext
+extension ServiceProvidersContext on BuildContext {
+  // Repositories
+  CapacityPlanningRepository get capacityPlanningRepository => 
+      read<CapacityPlanningRepository>();
+
+  TeamManagementRepository get teamManagementRepository => 
+      read<TeamManagementRepository>();
+
+  ConfigurationRepository get configurationRepository => 
+      read<ConfigurationRepository>();
+
+  SharedPreferences get sharedPreferences => 
+      read<SharedPreferences>();
+
+  // Capacity Planning Use Cases
+  CreateQuarterPlan get createQuarterPlan => read<CreateQuarterPlan>();
+  LoadQuarterPlan get loadQuarterPlan => read<LoadQuarterPlan>();
+  AddInitiativeToPlan get addInitiativeToPlan => read<AddInitiativeToPlan>();
+  AllocateCapacity get allocateCapacity => read<AllocateCapacity>();
+  GetCapacityAnalytics get getCapacityAnalytics => read<GetCapacityAnalytics>();
+
+  // Team Management Use Cases
+  AddTeamMember get addTeamMember => read<AddTeamMember>();
+  UpdateTeamMember get updateTeamMember => read<UpdateTeamMember>();
+  ManageTeamMemberAvailability get manageTeamMemberAvailability => read<ManageTeamMemberAvailability>();
+  AnalyzeTeamCapacity get analyzeTeamCapacity => read<AnalyzeTeamCapacity>();
+  SearchTeamMembers get searchTeamMembers => read<SearchTeamMembers>();
+
+  // Configuration Use Cases
+  ManageApplicationState get manageApplicationState => read<ManageApplicationState>();
+  ManageUserConfiguration get manageUserConfiguration => read<ManageUserConfiguration>();
+  InitializeApplication get initializeApplication => read<InitializeApplication>();
+
+  // Integration Use Cases
+  BackupAndRestoreData get backupAndRestoreData => read<BackupAndRestoreData>();
+  MigrateApplicationData get migrateApplicationData => read<MigrateApplicationData>();
+  BulkDataOperations get bulkDataOperations => read<BulkDataOperations>();
+
+  // Data Sources
+  LocalStorageDataSource get localStorageDataSource => read<LocalStorageDataSource>();
+
+  // Note: Storage services removed - use repositories directly
+
+  // Business Services
+  TeamManagementService get teamManagementService => read<TeamManagementService>();
+  CapacityPlanningService get capacityPlanningService => read<CapacityPlanningService>();
+}
+
+/// Helper for testing - provides mock implementations
+class TestServiceProviders {
+  /// Creates providers with mock implementations for testing
+  static List<Provider> createMockProviders({
+    CapacityPlanningRepository? capacityPlanningRepository,
+    TeamManagementRepository? teamManagementRepository,
+    ConfigurationRepository? configurationRepository,
+    SharedPreferences? sharedPreferences,
+  }) {
+    // This would typically use mock implementations
+    // For now, we'll use the real implementations with test data
+    throw UnimplementedError('Mock providers not yet implemented');
+  }
+}
