@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 /// Base card component with consistent styling
 class CTACard extends StatelessWidget {
   const CTACard({
-    super.key,
     required this.child,
+    super.key,
     this.padding,
     this.margin,
     this.elevation,
@@ -53,10 +53,10 @@ class CTACard extends StatelessWidget {
 /// Card specifically designed for displaying team member information
 class CTATeamMemberCard extends StatelessWidget {
   const CTATeamMemberCard({
-    super.key,
     required this.name,
     required this.email,
     required this.roles,
+    super.key,
     this.avatarUrl,
     this.isActive = true,
     this.weeklyCapacity,
@@ -193,9 +193,9 @@ class CTATeamMemberCard extends StatelessWidget {
 /// Card for displaying initiative information
 class CTAInitiativeCard extends StatelessWidget {
   const CTAInitiativeCard({
-    super.key,
     required this.title,
     required this.description,
+    super.key,
     this.priority,
     this.businessValue,
     this.estimatedWeeks,
@@ -305,9 +305,9 @@ class CTAInitiativeCard extends StatelessWidget {
 /// Simple information card for displaying key-value data
 class CTAInfoCard extends StatelessWidget {
   const CTAInfoCard({
-    super.key,
     required this.title,
     required this.value,
+    super.key,
     this.subtitle,
     this.icon,
     this.color,
@@ -380,8 +380,8 @@ class CTAInfoCard extends StatelessWidget {
 /// Chip component for displaying roles
 class CTARoleChip extends StatelessWidget {
   const CTARoleChip({
-    super.key,
     required this.role,
+    super.key,
     this.onDeleted,
   });
 
@@ -431,9 +431,9 @@ class CTARoleChip extends StatelessWidget {
 /// Chip for displaying metrics with color coding
 class CTAMetricChip extends StatelessWidget {
   const CTAMetricChip({
-    super.key,
     required this.label,
     required this.color,
+    super.key,
   });
 
   final String label;

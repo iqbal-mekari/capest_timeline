@@ -44,8 +44,8 @@ class ErrorBoundary extends StatefulWidget {
   final String errorMessage;
 
   const ErrorBoundary({
-    super.key,
     required this.child,
+    super.key,
     this.onError,
     this.errorBuilder,
     this.showDetails = kDebugMode,

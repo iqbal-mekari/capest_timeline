@@ -90,9 +90,9 @@ class CTATextField extends StatelessWidget {
 /// Dropdown field with consistent styling
 class CTADropdownField<T> extends StatelessWidget {
   const CTADropdownField({
-    super.key,
     required this.items,
     required this.onChanged,
+    super.key,
     this.value,
     this.labelText,
     this.hintText,
@@ -374,7 +374,7 @@ class CTAChipField extends StatelessWidget {
                   label: Text(option),
                   selected: isSelected,
                   onSelected: enabled ? (selected) {
-                    List<String> newValues = List.from(selectedValues);
+                    final List<String> newValues = List.from(selectedValues);
                     if (selected) {
                       newValues.add(option);
                     } else {

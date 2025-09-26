@@ -31,7 +31,7 @@ class CapacityPlanningRepositoryImpl implements CapacityPlanningRepository {
 
       final success = await _prefs.setString(_plansKey, jsonEncode(plans));
       if (!success) {
-        return Result.error(StorageException(
+        return Result.error(const StorageException(
           'Failed to save quarter plan',
           StorageErrorType.unknown,
         ));
@@ -107,7 +107,7 @@ class CapacityPlanningRepositoryImpl implements CapacityPlanningRepository {
 
       final success = await _prefs.setString(_plansKey, jsonEncode(plans));
       if (!success) {
-        return Result.error(StorageException(
+        return Result.error(const StorageException(
           'Failed to delete quarter plan',
           StorageErrorType.unknown,
         ));
