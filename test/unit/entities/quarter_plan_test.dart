@@ -29,7 +29,7 @@ void main() {
 
       // Create test initiatives
       testInitiatives = [
-        Initiative(
+        const Initiative(
           id: 'init001',
           name: 'Mobile App Redesign',
           description: 'Redesign mobile application UI',
@@ -42,7 +42,7 @@ void main() {
           estimatedEffortWeeks: 6.0,
           dependencies: [],
         ),
-        Initiative(
+        const Initiative(
           id: 'init002',
           name: 'API Modernization',
           description: 'Upgrade backend APIs to latest standards',
@@ -59,7 +59,7 @@ void main() {
 
       // Create test team members
       testTeamMembers = [
-        TeamMember(
+        const TeamMember(
           id: 'tm001',
           name: 'Alice Frontend',
           email: 'alice@company.com',
@@ -68,7 +68,7 @@ void main() {
           skillLevel: 8,
           isActive: true,
         ),
-        TeamMember(
+        const TeamMember(
           id: 'tm002',
           name: 'Bob Backend',
           email: 'bob@company.com',
@@ -77,7 +77,7 @@ void main() {
           skillLevel: 9,
           isActive: true,
         ),
-        TeamMember(
+        const TeamMember(
           id: 'tm003',
           name: 'Carol Designer',
           email: 'carol@company.com',
@@ -170,7 +170,7 @@ void main() {
     group('Display Name and Date Range', () {
       test('should generate correct display name when name is provided', () {
         // Arrange
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp003',
           quarter: 1,
           year: 2025,
@@ -186,7 +186,7 @@ void main() {
 
       test('should generate default display name when name is not provided', () {
         // Arrange
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp004',
           quarter: 2,
           year: 2025,
@@ -201,7 +201,7 @@ void main() {
 
       test('should calculate correct date range for Q1', () {
         // Arrange
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp005',
           quarter: 1,
           year: 2024,
@@ -220,7 +220,7 @@ void main() {
 
       test('should calculate correct date range for Q2', () {
         // Arrange
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp006',
           quarter: 2,
           year: 2024,
@@ -239,7 +239,7 @@ void main() {
 
       test('should calculate correct date range for Q3', () {
         // Arrange
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp007',
           quarter: 3,
           year: 2024,
@@ -258,7 +258,7 @@ void main() {
 
       test('should calculate correct date range for Q4', () {
         // Arrange
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp008',
           quarter: 4,
           year: 2024,
@@ -283,9 +283,9 @@ void main() {
           id: 'qp009',
           quarter: 3,
           year: 2024,
-          initiatives: [],
+          initiatives: const [],
           teamMembers: testTeamMembers,
-          allocations: [],
+          allocations: const [],
         );
 
         // Act
@@ -420,7 +420,7 @@ void main() {
         // Arrange
         final membersWithInactive = [
           ...testTeamMembers,
-          TeamMember(
+          const TeamMember(
             id: 'tm004',
             name: 'Dave Inactive',
             email: 'dave@company.com',
@@ -437,7 +437,7 @@ void main() {
           year: 2024,
           initiatives: testInitiatives,
           teamMembers: membersWithInactive,
-          allocations: [],
+          allocations: const [],
         );
 
         // Act
@@ -482,7 +482,7 @@ void main() {
 
       test('should handle team members with multiple roles in breakdown', () {
         // Arrange
-        final multiRoleMember = TeamMember(
+        const multiRoleMember = TeamMember(
           id: 'tm005',
           name: 'Eve Fullstack',
           email: 'eve@company.com',
@@ -492,7 +492,7 @@ void main() {
           isActive: true,
         );
 
-        final quarterPlan = QuarterPlan(
+        const quarterPlan = QuarterPlan(
           id: 'qp017',
           quarter: 3,
           year: 2024,
@@ -820,7 +820,7 @@ void main() {
 
       test('should fail validation for empty ID', () {
         // Arrange
-        final invalidQuarterPlan = QuarterPlan(
+        const invalidQuarterPlan = QuarterPlan(
           id: '',
           quarter: 1,
           year: 2024,
@@ -839,7 +839,7 @@ void main() {
 
       test('should fail validation for invalid quarter', () {
         // Arrange
-        final invalidQuarter1 = QuarterPlan(
+        const invalidQuarter1 = QuarterPlan(
           id: 'qp029',
           quarter: 0,
           year: 2024,
@@ -848,7 +848,7 @@ void main() {
           allocations: [],
         );
 
-        final invalidQuarter2 = QuarterPlan(
+        const invalidQuarter2 = QuarterPlan(
           id: 'qp030',
           quarter: 5,
           year: 2024,
@@ -870,7 +870,7 @@ void main() {
 
       test('should fail validation for invalid year', () {
         // Arrange
-        final invalidYear1 = QuarterPlan(
+        const invalidYear1 = QuarterPlan(
           id: 'qp031',
           quarter: 1,
           year: 2010, // Too early
@@ -879,7 +879,7 @@ void main() {
           allocations: [],
         );
 
-        final invalidYear2 = QuarterPlan(
+        const invalidYear2 = QuarterPlan(
           id: 'qp032',
           quarter: 1,
           year: 2060, // Too late
@@ -911,8 +911,8 @@ void main() {
           quarter: 1,
           year: 2024,
           initiatives: duplicateInitiatives,
-          teamMembers: [],
-          allocations: [],
+          teamMembers: const [],
+          allocations: const [],
         );
 
         // Act
@@ -934,9 +934,9 @@ void main() {
           id: 'qp034',
           quarter: 1,
           year: 2024,
-          initiatives: [],
+          initiatives: const [],
           teamMembers: duplicateMembers,
-          allocations: [],
+          allocations: const [],
         );
 
         // Act
@@ -958,8 +958,8 @@ void main() {
           id: 'qp035',
           quarter: 1,
           year: 2024,
-          initiatives: [],
-          teamMembers: [],
+          initiatives: const [],
+          teamMembers: const [],
           allocations: duplicateAllocations,
         );
 
@@ -1270,7 +1270,7 @@ void main() {
     group('Construction and Properties', () {
       test('should create CapacityBreakdown with values', () {
         // Arrange & Act
-        final breakdown = CapacityBreakdown(
+        const breakdown = CapacityBreakdown(
           available: 10.0,
           allocated: 7.0,
         );
@@ -1297,7 +1297,7 @@ void main() {
 
       test('should identify over-allocated breakdown', () {
         // Arrange & Act
-        final breakdown = CapacityBreakdown(
+        const breakdown = CapacityBreakdown(
           available: 5.0,
           allocated: 7.0,
         );
@@ -1310,7 +1310,7 @@ void main() {
 
       test('should handle zero available capacity', () {
         // Arrange & Act
-        final breakdown = CapacityBreakdown(
+        const breakdown = CapacityBreakdown(
           available: 0.0,
           allocated: 5.0,
         );
@@ -1324,7 +1324,7 @@ void main() {
     group('Copy and String Representation', () {
       test('should create copy with updated values', () {
         // Arrange
-        final original = CapacityBreakdown(
+        const original = CapacityBreakdown(
           available: 8.0,
           allocated: 5.0,
         );
@@ -1340,7 +1340,7 @@ void main() {
 
       test('should provide meaningful string representation', () {
         // Arrange
-        final breakdown = CapacityBreakdown(
+        const breakdown = CapacityBreakdown(
           available: 12.5,
           allocated: 8.3,
         );
@@ -1360,7 +1360,7 @@ void main() {
     group('Construction and Calculations', () {
       test('should create QuarterPlanSummary with all properties', () {
         // Arrange & Act
-        final summary = QuarterPlanSummary(
+        const summary = QuarterPlanSummary(
           totalInitiatives: 5,
           completedInitiatives: 2,
           totalTeamMembers: 8,
@@ -1386,7 +1386,7 @@ void main() {
 
       test('should handle zero initiatives for completion percentage', () {
         // Arrange & Act
-        final summary = QuarterPlanSummary(
+        const summary = QuarterPlanSummary(
           totalInitiatives: 0,
           completedInitiatives: 0,
           totalTeamMembers: 5,
@@ -1404,7 +1404,7 @@ void main() {
 
       test('should identify plans with issues correctly', () {
         // Arrange
-        final summaryWithOverAllocation = QuarterPlanSummary(
+        const summaryWithOverAllocation = QuarterPlanSummary(
           totalInitiatives: 3,
           completedInitiatives: 1,
           totalTeamMembers: 5,
@@ -1415,7 +1415,7 @@ void main() {
           overAllocatedMembers: 0,
         );
 
-        final summaryWithUnderAllocation = QuarterPlanSummary(
+        const summaryWithUnderAllocation = QuarterPlanSummary(
           totalInitiatives: 4,
           completedInitiatives: 1,
           totalTeamMembers: 6,
@@ -1426,7 +1426,7 @@ void main() {
           overAllocatedMembers: 0,
         );
 
-        final summaryWithOverAllocatedMembers = QuarterPlanSummary(
+        const summaryWithOverAllocatedMembers = QuarterPlanSummary(
           totalInitiatives: 3,
           completedInitiatives: 1,
           totalTeamMembers: 4,
@@ -1437,7 +1437,7 @@ void main() {
           overAllocatedMembers: 1,
         );
 
-        final summaryWithoutIssues = QuarterPlanSummary(
+        const summaryWithoutIssues = QuarterPlanSummary(
           totalInitiatives: 2,
           completedInitiatives: 1,
           totalTeamMembers: 5,
@@ -1459,7 +1459,7 @@ void main() {
     group('String Representation', () {
       test('should provide meaningful string representation', () {
         // Arrange
-        final summary = QuarterPlanSummary(
+        const summary = QuarterPlanSummary(
           totalInitiatives: 6,
           completedInitiatives: 3,
           totalTeamMembers: 10,

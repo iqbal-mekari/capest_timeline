@@ -17,7 +17,7 @@ void main() {
     setUp(() {
       // Create test team members
       testTeamMembers = [
-        TeamMember(
+        const TeamMember(
           id: 'tm001',
           name: 'Alice Frontend',
           email: 'alice@test.com',
@@ -27,7 +27,7 @@ void main() {
           isActive: true,
           unavailablePeriods: [],
         ),
-        TeamMember(
+        const TeamMember(
           id: 'tm002',
           name: 'Bob Backend',
           email: 'bob@test.com',
@@ -37,7 +37,7 @@ void main() {
           isActive: true,
           unavailablePeriods: [],
         ),
-        TeamMember(
+        const TeamMember(
           id: 'tm003',
           name: 'Carol QA',
           email: 'carol@test.com',
@@ -51,7 +51,7 @@ void main() {
 
       // Create test initiatives
       testInitiatives = [
-        Initiative(
+        const Initiative(
           id: 'init001',
           name: 'Mobile App Feature',
           description: 'New mobile app feature',
@@ -61,7 +61,7 @@ void main() {
           requiredRoles: {Role.frontend: 3.0, Role.backend: 2.0},
           dependencies: [],
         ),
-        Initiative(
+        const Initiative(
           id: 'init002',
           name: 'Backend API',
           description: 'New backend API development',
@@ -155,7 +155,7 @@ void main() {
     });
 
     testWidgets('handles empty quarter plan gracefully', (tester) async {
-      final emptyPlan = QuarterPlan(
+      const emptyPlan = QuarterPlan(
         id: 'empty',
         quarter: 3,
         year: 2024,
@@ -166,7 +166,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: VirtualizedTimelineWidget(
               quarterPlan: emptyPlan,
@@ -286,7 +286,7 @@ void main() {
           weeklyCapacity: 1.0,
           skillLevel: 5 + (index % 5),
           isActive: true,
-          unavailablePeriods: [],
+          unavailablePeriods: const [],
         ));
 
         final largePlan = QuarterPlan(
@@ -296,7 +296,7 @@ void main() {
           name: 'Large Plan',
           initiatives: testInitiatives,
           teamMembers: largeTeam,
-          allocations: [],
+          allocations: const [],
         );
 
         await tester.pumpWidget(

@@ -39,7 +39,7 @@ void main() {
           estimatedEffortWeeks: 8.0,
           priority: 8,
           businessValue: 9,
-          dependencies: [],
+          dependencies: const [],
         );
 
         // Assert
@@ -63,12 +63,12 @@ void main() {
           id: 'init002',
           name: 'Mobile App Redesign',
           description: 'Complete redesign of mobile application UI/UX',
-          requiredRoles: {Role.frontend: 6.0, Role.design: 4.0},
+          requiredRoles: const {Role.frontend: 6.0, Role.design: 4.0},
           estimatedEffortWeeks: 10.0,
           priority: 7,
           businessValue: 8,
-          dependencies: ['init001'],
-          tags: ['mobile', 'ui', 'redesign'],
+          dependencies: const ['init001'],
+          tags: const ['mobile', 'ui', 'redesign'],
           notes: 'High visibility project for Q4',
           createdAt: testCreatedAt,
           updatedAt: testUpdatedAt,
@@ -93,7 +93,7 @@ void main() {
     group('Effort Calculations', () {
       test('should calculate total effort correctly', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init003',
           name: 'API Integration',
           description: 'Integrate with external payment API',
@@ -117,7 +117,7 @@ void main() {
 
       test('should calculate effort distribution as percentages', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init004',
           name: 'Database Migration',
           description: 'Migrate from MySQL to PostgreSQL',
@@ -141,7 +141,7 @@ void main() {
 
       test('should handle zero total effort in distribution calculation', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init005',
           name: 'Empty Initiative',
           description: 'Initiative with no effort',
@@ -161,7 +161,7 @@ void main() {
 
       test('should get all unique roles required', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init006',
           name: 'Full Stack Feature',
           description: 'Complete feature requiring multiple roles',
@@ -189,7 +189,7 @@ void main() {
     group('Role and Complexity Analysis', () {
       test('should identify primary role correctly', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init007',
           name: 'Backend Heavy Feature',
           description: 'Feature requiring mostly backend work',
@@ -213,7 +213,7 @@ void main() {
 
       test('should return null primary role for empty requirements', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init008',
           name: 'Empty Requirements',
           description: 'Initiative with no role requirements',
@@ -233,7 +233,7 @@ void main() {
 
       test('should identify complex initiatives correctly', () {
         // Arrange
-        final complexInitiative = Initiative(
+        const complexInitiative = Initiative(
           id: 'init009',
           name: 'Multi-Role Feature',
           description: 'Feature requiring multiple roles',
@@ -247,7 +247,7 @@ void main() {
           dependencies: [],
         );
 
-        final simpleInitiative = Initiative(
+        const simpleInitiative = Initiative(
           id: 'init010',
           name: 'Single Role Feature',
           description: 'Feature requiring only one role',
@@ -267,7 +267,7 @@ void main() {
 
       test('should identify large initiatives correctly', () {
         // Arrange
-        final largeInitiative = Initiative(
+        const largeInitiative = Initiative(
           id: 'init011',
           name: 'Large Feature',
           description: 'Feature requiring significant effort',
@@ -281,7 +281,7 @@ void main() {
           dependencies: [],
         );
 
-        final smallInitiative = Initiative(
+        const smallInitiative = Initiative(
           id: 'init012',
           name: 'Small Feature',
           description: 'Small feature requiring minimal effort',
@@ -303,7 +303,7 @@ void main() {
     group('Priority Scoring', () {
       test('should calculate priority score correctly', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init013',
           name: 'High Priority Feature',
           description: 'Critical business feature',
@@ -323,7 +323,7 @@ void main() {
 
       test('should handle minimum priority and business value', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init014',
           name: 'Low Priority Feature',
           description: 'Nice to have feature',
@@ -343,7 +343,7 @@ void main() {
 
       test('should handle maximum priority and business value', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init015',
           name: 'Critical Feature',
           description: 'Mission critical feature',
@@ -365,7 +365,7 @@ void main() {
     group('Validation', () {
       test('should validate correct Initiative successfully', () {
         // Arrange
-        final validInitiative = Initiative(
+        const validInitiative = Initiative(
           id: 'init016',
           name: 'Valid Feature',
           description: 'Well-defined feature with proper constraints',
@@ -385,7 +385,7 @@ void main() {
 
       test('should fail validation for empty ID', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: '',
           name: 'Valid Name',
           description: 'Valid description',
@@ -406,7 +406,7 @@ void main() {
 
       test('should fail validation for empty name', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: 'init017',
           name: '',
           description: 'Valid description',
@@ -427,7 +427,7 @@ void main() {
 
       test('should fail validation for empty description', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: 'init018',
           name: 'Valid Name',
           description: '',
@@ -448,7 +448,7 @@ void main() {
 
       test('should fail validation for invalid priority range', () {
         // Arrange
-        final lowPriorityInitiative = Initiative(
+        const lowPriorityInitiative = Initiative(
           id: 'init019',
           name: 'Valid Name',
           description: 'Valid description',
@@ -459,7 +459,7 @@ void main() {
           dependencies: [],
         );
 
-        final highPriorityInitiative = Initiative(
+        const highPriorityInitiative = Initiative(
           id: 'init020',
           name: 'Valid Name',
           description: 'Valid description',
@@ -483,7 +483,7 @@ void main() {
 
       test('should fail validation for invalid business value range', () {
         // Arrange
-        final lowValueInitiative = Initiative(
+        const lowValueInitiative = Initiative(
           id: 'init021',
           name: 'Valid Name',
           description: 'Valid description',
@@ -494,7 +494,7 @@ void main() {
           dependencies: [],
         );
 
-        final highValueInitiative = Initiative(
+        const highValueInitiative = Initiative(
           id: 'init022',
           name: 'Valid Name',
           description: 'Valid description',
@@ -518,7 +518,7 @@ void main() {
 
       test('should fail validation for empty required roles', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: 'init023',
           name: 'Valid Name',
           description: 'Valid description',
@@ -539,7 +539,7 @@ void main() {
 
       test('should fail validation for negative role effort', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: 'init024',
           name: 'Valid Name',
           description: 'Valid description',
@@ -563,7 +563,7 @@ void main() {
 
       test('should fail validation for zero or negative estimated effort', () {
         // Arrange
-        final zeroEffortInitiative = Initiative(
+        const zeroEffortInitiative = Initiative(
           id: 'init025',
           name: 'Valid Name',
           description: 'Valid description',
@@ -574,7 +574,7 @@ void main() {
           dependencies: [],
         );
 
-        final negativeEffortInitiative = Initiative(
+        const negativeEffortInitiative = Initiative(
           id: 'init026',
           name: 'Valid Name',
           description: 'Valid description',
@@ -598,7 +598,7 @@ void main() {
 
       test('should fail validation when estimated effort does not match role efforts', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: 'init027',
           name: 'Valid Name',
           description: 'Valid description',
@@ -623,7 +623,7 @@ void main() {
 
       test('should fail validation for self-referencing dependencies', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: 'init028',
           name: 'Valid Name',
           description: 'Valid description',
@@ -644,7 +644,7 @@ void main() {
 
       test('should accumulate multiple validation errors', () {
         // Arrange
-        final invalidInitiative = Initiative(
+        const invalidInitiative = Initiative(
           id: '',
           name: '',
           description: '',
@@ -678,15 +678,15 @@ void main() {
           id: 'init029',
           name: 'Serialization Test',
           description: 'Test initiative for serialization',
-          requiredRoles: {
+          requiredRoles: const {
             Role.backend: 4.0,
             Role.frontend: 3.0,
           },
           estimatedEffortWeeks: 7.0,
           priority: 8,
           businessValue: 7,
-          dependencies: ['init001', 'init002'],
-          tags: ['test', 'serialization'],
+          dependencies: const ['init001', 'init002'],
+          tags: const ['test', 'serialization'],
           notes: 'Test notes',
           createdAt: testCreatedAt,
           updatedAt: testUpdatedAt,
@@ -757,7 +757,7 @@ void main() {
           id: 'init031',
           name: 'Round-trip Test',
           description: 'Test initiative for round-trip serialization',
-          requiredRoles: {
+          requiredRoles: const {
             Role.backend: 3.0,
             Role.frontend: 2.0,
             Role.design: 1.0,
@@ -765,8 +765,8 @@ void main() {
           estimatedEffortWeeks: 6.0,
           priority: 7,
           businessValue: 8,
-          dependencies: ['init001'],
-          tags: ['roundtrip'],
+          dependencies: const ['init001'],
+          tags: const ['roundtrip'],
           notes: 'Round-trip notes',
           createdAt: testCreatedAt,
           updatedAt: testUpdatedAt,
@@ -815,7 +815,7 @@ void main() {
     group('Copy and Mutation', () {
       test('should create copy with updated fields', () {
         // Arrange
-        final originalInitiative = Initiative(
+        const originalInitiative = Initiative(
           id: 'init033',
           name: 'Original Name',
           description: 'Original description',
@@ -849,7 +849,7 @@ void main() {
 
       test('should preserve original when no fields updated in copy', () {
         // Arrange
-        final originalInitiative = Initiative(
+        const originalInitiative = Initiative(
           id: 'init034',
           name: 'Preserve Test',
           description: 'Test preservation in copy',
@@ -872,7 +872,7 @@ void main() {
     group('Equality and String Representation', () {
       test('should implement equality correctly', () {
         // Arrange
-        final initiative1 = Initiative(
+        const initiative1 = Initiative(
           id: 'init035',
           name: 'Equality Test',
           description: 'Test initiative for equality',
@@ -883,7 +883,7 @@ void main() {
           dependencies: [],
         );
 
-        final initiative2 = Initiative(
+        const initiative2 = Initiative(
           id: 'init035',
           name: 'Equality Test',
           description: 'Test initiative for equality',
@@ -894,7 +894,7 @@ void main() {
           dependencies: [],
         );
 
-        final initiative3 = Initiative(
+        const initiative3 = Initiative(
           id: 'init036',
           name: 'Different Initiative',
           description: 'Different test initiative',
@@ -913,7 +913,7 @@ void main() {
 
       test('should provide meaningful string representation', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init037',
           name: 'String Test Initiative',
           description: 'Initiative for testing string representation',
@@ -943,7 +943,7 @@ void main() {
     group('Edge Cases', () {
       test('should handle very small effort values', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init038',
           name: 'Tiny Initiative',
           description: 'Initiative with minimal effort',
@@ -963,7 +963,7 @@ void main() {
 
       test('should handle very large effort values', () {
         // Arrange
-        final initiative = Initiative(
+        const initiative = Initiative(
           id: 'init039',
           name: 'Massive Initiative',
           description: 'Initiative with significant effort',
@@ -995,7 +995,7 @@ void main() {
           id: 'init040',
           name: 'Dependent Initiative',
           description: 'Initiative with many dependencies',
-          requiredRoles: {Role.backend: 3.0},
+          requiredRoles: const {Role.backend: 3.0},
           estimatedEffortWeeks: 3.0,
           priority: 5,
           businessValue: 6,
@@ -1015,11 +1015,11 @@ void main() {
           id: 'init041',
           name: 'Tagged Initiative',
           description: 'Initiative with many tags',
-          requiredRoles: {Role.frontend: 2.0},
+          requiredRoles: const {Role.frontend: 2.0},
           estimatedEffortWeeks: 2.0,
           priority: 4,
           businessValue: 5,
-          dependencies: [],
+          dependencies: const [],
           tags: manyTags,
         );
 

@@ -37,8 +37,8 @@ class KanbanTimelineApp extends StatelessWidget {
   final SharedPreferences preferences;
 
   const KanbanTimelineApp({
-    required this.preferences,
     super.key,
+    required this.preferences,
   });
 
   @override
@@ -50,9 +50,7 @@ class KanbanTimelineApp extends StatelessWidget {
           create: (_) => StorageService(sharedPreferences: preferences),
         ),
         Provider<CapacityService>(
-          create: (context) => CapacityService(
-            storageService: context.read<StorageService>(),
-          ),
+          create: (_) => CapacityService(),
         ),
         Provider<KanbanService>(
           create: (context) => KanbanService(
@@ -170,16 +168,27 @@ class _KanbanTimelineScreenState extends State<KanbanTimelineScreen> {
         
         // Create initiative form
         Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: const CreateInitiativeWidget(),
+          child: CreateInitiativeWidget(
+            onInitiativeCreated: (initiative) {
+              // Initiative created successfully
+              setState(() => _showCreateInitiative = false);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Initiative "${initiative.title}" created successfully!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
+            onCancel: () {
+              setState(() => _showCreateInitiative = false);
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget? _buildFloatingActionButton() {
+  Widget _buildFloatingActionButton() {
     if (_showCreateInitiative) {
       return null; // Hide FAB when creating initiative
     }
@@ -228,5 +237,3 @@ class _KanbanTimelineScreenState extends State<KanbanTimelineScreen> {
     );
   }
 }
-
-

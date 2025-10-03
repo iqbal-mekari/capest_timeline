@@ -35,7 +35,7 @@ void main() {
     group('Construction and Basic Properties', () {
       test('should create valid TeamMember with required fields', () {
         // Arrange & Act
-        final teamMember = TeamMember(
+        const teamMember = TeamMember(
           id: 'tm001',
           name: 'Alice Johnson',
           email: 'alice@company.com',
@@ -63,7 +63,7 @@ void main() {
           id: 'tm002',
           name: 'Bob Smith',
           email: 'bob@company.com',
-          roles: {Role.backend, Role.devops},
+          roles: const {Role.backend, Role.devops},
           weeklyCapacity: 0.8,
           skillLevel: 8,
           unavailablePeriods: [testVacation],
@@ -87,7 +87,7 @@ void main() {
     group('Computed Properties', () {
       test('should return correct primary role', () {
         // Arrange
-        final teamMember = TeamMember(
+        const teamMember = TeamMember(
           id: 'tm003',
           name: 'Carol Davis',
           email: 'carol@company.com',
@@ -103,7 +103,7 @@ void main() {
 
       test('should return null primary role when no roles', () {
         // Arrange
-        final teamMember = TeamMember(
+        const teamMember = TeamMember(
           id: 'tm004',
           name: 'Dave Wilson',
           email: 'dave@company.com',
@@ -117,7 +117,7 @@ void main() {
 
       test('should calculate quarterly capacity correctly', () {
         // Arrange
-        final fullTimeTeamMember = TeamMember(
+        const fullTimeTeamMember = TeamMember(
           id: 'tm005',
           name: 'Eva Brown',
           email: 'eva@company.com',
@@ -125,7 +125,7 @@ void main() {
           weeklyCapacity: 1.0,
         );
 
-        final partTimeTeamMember = TeamMember(
+        const partTimeTeamMember = TeamMember(
           id: 'tm006',
           name: 'Frank Green',
           email: 'frank@company.com',
@@ -140,7 +140,7 @@ void main() {
 
       test('should identify senior team members correctly', () {
         // Arrange
-        final seniorMember = TeamMember(
+        const seniorMember = TeamMember(
           id: 'tm007',
           name: 'Grace Lee',
           email: 'grace@company.com',
@@ -149,7 +149,7 @@ void main() {
           skillLevel: 9,
         );
 
-        final regularMember = TeamMember(
+        const regularMember = TeamMember(
           id: 'tm008',
           name: 'Henry Taylor',
           email: 'henry@company.com',
@@ -165,7 +165,7 @@ void main() {
 
       test('should identify junior team members correctly', () {
         // Arrange
-        final juniorMember = TeamMember(
+        const juniorMember = TeamMember(
           id: 'tm009',
           name: 'Ivy Martinez',
           email: 'ivy@company.com',
@@ -174,7 +174,7 @@ void main() {
           skillLevel: 2,
         );
 
-        final regularMember = TeamMember(
+        const regularMember = TeamMember(
           id: 'tm010',
           name: 'Jack Anderson',
           email: 'jack@company.com',
@@ -192,7 +192,7 @@ void main() {
     group('Role Capabilities', () {
       test('should identify technical roles correctly', () {
         // Arrange
-        final techMember = TeamMember(
+        const techMember = TeamMember(
           id: 'tm011',
           name: 'Karen White',
           email: 'karen@company.com',
@@ -200,7 +200,7 @@ void main() {
           weeklyCapacity: 1.0,
         );
 
-        final nonTechMember = TeamMember(
+        const nonTechMember = TeamMember(
           id: 'tm012',
           name: 'Liam Black',
           email: 'liam@company.com',
@@ -217,7 +217,7 @@ void main() {
 
       test('should identify client-facing roles correctly', () {
         // Arrange
-        final clientFacingMember = TeamMember(
+        const clientFacingMember = TeamMember(
           id: 'tm013',
           name: 'Maya Rodriguez',
           email: 'maya@company.com',
@@ -225,7 +225,7 @@ void main() {
           weeklyCapacity: 1.0,
         );
 
-        final internalMember = TeamMember(
+        const internalMember = TeamMember(
           id: 'tm014',
           name: 'Nathan Cooper',
           email: 'nathan@company.com',
@@ -240,7 +240,7 @@ void main() {
 
       test('should check role fulfillment correctly', () {
         // Arrange
-        final teamMember = TeamMember(
+        const teamMember = TeamMember(
           id: 'tm015',
           name: 'Olivia Turner',
           email: 'olivia@company.com',
@@ -257,7 +257,7 @@ void main() {
 
       test('should return correct role categories', () {
         // Arrange
-        final mixedRoleMember = TeamMember(
+        const mixedRoleMember = TeamMember(
           id: 'tm016',
           name: 'Paul Johnson',
           email: 'paul@company.com',
@@ -277,7 +277,7 @@ void main() {
     group('Capacity Calculations', () {
       test('should calculate available capacity without unavailable periods', () {
         // Arrange
-        final teamMember = TeamMember(
+        const teamMember = TeamMember(
           id: 'tm017',
           name: 'Quinn Davis',
           email: 'quinn@company.com',
@@ -308,7 +308,7 @@ void main() {
           id: 'tm018',
           name: 'Rachel Green',
           email: 'rachel@company.com',
-          roles: {Role.frontend},
+          roles: const {Role.frontend},
           weeklyCapacity: 1.0,
           unavailablePeriods: [vacationPeriod],
           isActive: true,
@@ -326,7 +326,7 @@ void main() {
 
       test('should return zero capacity for inactive members', () {
         // Arrange
-        final inactiveTeamMember = TeamMember(
+        const inactiveTeamMember = TeamMember(
           id: 'tm019',
           name: 'Sam Wilson',
           email: 'sam@company.com',
@@ -357,7 +357,7 @@ void main() {
           id: 'tm020',
           name: 'Tina Brown',
           email: 'tina@company.com',
-          roles: {Role.qa},
+          roles: const {Role.qa},
           weeklyCapacity: 1.0,
           unavailablePeriods: [partialVacation],
           isActive: true,
@@ -378,7 +378,7 @@ void main() {
     group('Validation', () {
       test('should validate correct TeamMember successfully', () {
         // Arrange
-        final validTeamMember = TeamMember(
+        const validTeamMember = TeamMember(
           id: 'tm021',
           name: 'Uma Patel',
           email: 'uma@company.com',
@@ -396,7 +396,7 @@ void main() {
 
       test('should fail validation for empty ID', () {
         // Arrange
-        final invalidTeamMember = TeamMember(
+        const invalidTeamMember = TeamMember(
           id: '',
           name: 'Victor Lopez',
           email: 'victor@company.com',
@@ -414,7 +414,7 @@ void main() {
 
       test('should fail validation for empty name', () {
         // Arrange
-        final invalidTeamMember = TeamMember(
+        const invalidTeamMember = TeamMember(
           id: 'tm022',
           name: '   ',
           email: 'whitespace@company.com',
@@ -432,7 +432,7 @@ void main() {
 
       test('should fail validation for invalid email', () {
         // Arrange
-        final invalidTeamMember = TeamMember(
+        const invalidTeamMember = TeamMember(
           id: 'tm023',
           name: 'Walter White',
           email: 'not-an-email',
@@ -450,7 +450,7 @@ void main() {
 
       test('should fail validation for empty roles', () {
         // Arrange
-        final invalidTeamMember = TeamMember(
+        const invalidTeamMember = TeamMember(
           id: 'tm024',
           name: 'Xander Young',
           email: 'xander@company.com',
@@ -468,7 +468,7 @@ void main() {
 
       test('should fail validation for invalid weekly capacity', () {
         // Arrange
-        final invalidTeamMember1 = TeamMember(
+        const invalidTeamMember1 = TeamMember(
           id: 'tm025',
           name: 'Yara King',
           email: 'yara@company.com',
@@ -476,7 +476,7 @@ void main() {
           weeklyCapacity: 0.0,
         );
 
-        final invalidTeamMember2 = TeamMember(
+        const invalidTeamMember2 = TeamMember(
           id: 'tm026',
           name: 'Zoe Clark',
           email: 'zoe@company.com',
@@ -499,7 +499,7 @@ void main() {
 
       test('should fail validation for invalid skill level', () {
         // Arrange
-        final invalidTeamMember1 = TeamMember(
+        const invalidTeamMember1 = TeamMember(
           id: 'tm027',
           name: 'Aaron Scott',
           email: 'aaron@company.com',
@@ -508,7 +508,7 @@ void main() {
           skillLevel: 0,
         );
 
-        final invalidTeamMember2 = TeamMember(
+        const invalidTeamMember2 = TeamMember(
           id: 'tm028',
           name: 'Betty Adams',
           email: 'betty@company.com',
@@ -542,7 +542,7 @@ void main() {
           id: 'tm029',
           name: 'Charlie Baker',
           email: 'charlie@company.com',
-          roles: {Role.frontend},
+          roles: const {Role.frontend},
           weeklyCapacity: 1.0,
           unavailablePeriods: [invalidPeriod],
         );
@@ -574,7 +574,7 @@ void main() {
           id: 'tm030',
           name: 'Diana Foster',
           email: 'diana@company.com',
-          roles: {Role.backend},
+          roles: const {Role.backend},
           weeklyCapacity: 1.0,
           unavailablePeriods: [period1, period2],
         );
@@ -596,7 +596,7 @@ void main() {
           id: 'tm031',
           name: 'Edward Hill',
           email: 'edward@company.com',
-          roles: {Role.frontend, Role.design},
+          roles: const {Role.frontend, Role.design},
           weeklyCapacity: 0.8,
           skillLevel: 6,
           unavailablePeriods: [testVacation],
@@ -673,7 +673,7 @@ void main() {
           id: 'tm033',
           name: 'George Miller',
           email: 'george@company.com',
-          roles: {Role.devops, Role.backend},
+          roles: const {Role.devops, Role.backend},
           weeklyCapacity: 0.9,
           skillLevel: 9,
           unavailablePeriods: [testVacation],
@@ -695,7 +695,7 @@ void main() {
     group('Copy and Mutation', () {
       test('should create copy with updated fields', () {
         // Arrange
-        final originalTeamMember = TeamMember(
+        const originalTeamMember = TeamMember(
           id: 'tm034',
           name: 'Hannah Johnson',
           email: 'hannah@company.com',
@@ -723,7 +723,7 @@ void main() {
 
       test('should preserve original when no fields updated in copy', () {
         // Arrange
-        final originalTeamMember = TeamMember(
+        const originalTeamMember = TeamMember(
           id: 'tm035',
           name: 'Ian Roberts',
           email: 'ian@company.com',
@@ -743,7 +743,7 @@ void main() {
     group('Equality and String Representation', () {
       test('should implement equality correctly', () {
         // Arrange
-        final teamMember1 = TeamMember(
+        const teamMember1 = TeamMember(
           id: 'tm036',
           name: 'Julia Chen',
           email: 'julia@company.com',
@@ -752,7 +752,7 @@ void main() {
           skillLevel: 6,
         );
 
-        final teamMember2 = TeamMember(
+        const teamMember2 = TeamMember(
           id: 'tm036',
           name: 'Julia Chen',
           email: 'julia@company.com',
@@ -761,7 +761,7 @@ void main() {
           skillLevel: 6,
         );
 
-        final teamMember3 = TeamMember(
+        const teamMember3 = TeamMember(
           id: 'tm037',
           name: 'Julia Chen',
           email: 'julia@company.com',
@@ -778,7 +778,7 @@ void main() {
 
       test('should provide meaningful string representation', () {
         // Arrange
-        final teamMember = TeamMember(
+        const teamMember = TeamMember(
           id: 'tm038',
           name: 'Kevin Wright',
           email: 'kevin@company.com',

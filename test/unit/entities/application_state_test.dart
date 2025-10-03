@@ -56,7 +56,7 @@ void main() {
         // Arrange & Act
         final applicationState = ApplicationState(
           currentPlanId: 'plan001',
-          lastAccessedPlanIds: ['plan001', 'plan002', 'plan003'],
+          lastAccessedPlanIds: const ['plan001', 'plan002', 'plan003'],
           viewMode: ViewMode.capacity,
           selectedQuarter: 3,
           selectedYear: 2024,
@@ -327,11 +327,11 @@ void main() {
     group('Validation', () {
       test('should validate correct ApplicationState successfully', () {
         // Arrange
-        final validState = ApplicationState(
+        const validState = ApplicationState(
           selectedQuarter: 2,
           selectedYear: 2024,
           lastAccessedPlanIds: ['plan1', 'plan2'],
-          filters: const ApplicationFilters(),
+          filters: ApplicationFilters(),
         );
 
         // Act
@@ -441,7 +441,7 @@ void main() {
         // Arrange
         final applicationState = ApplicationState(
           currentPlanId: 'plan001',
-          lastAccessedPlanIds: ['plan001', 'plan002'],
+          lastAccessedPlanIds: const ['plan001', 'plan002'],
           viewMode: ViewMode.capacity,
           selectedQuarter: 3,
           selectedYear: 2024,
@@ -507,7 +507,7 @@ void main() {
         // Arrange
         final originalState = ApplicationState(
           currentPlanId: 'plan003',
-          lastAccessedPlanIds: ['plan003', 'plan001'],
+          lastAccessedPlanIds: const ['plan003', 'plan001'],
           viewMode: ViewMode.kanban,
           selectedQuarter: 1,
           selectedYear: 2024,
