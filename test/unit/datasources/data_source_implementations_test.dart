@@ -267,8 +267,8 @@ void main() {
       test('should handle data source cleanup operations', () async {
         // ARRANGE - Create data that needs cleanup
         final temporaryData = {
-          'temp_001': {'type': 'temporary', 'expires': DateTime.now().add(Duration(minutes: -10)).millisecondsSinceEpoch},
-          'temp_002': {'type': 'temporary', 'expires': DateTime.now().add(Duration(minutes: 10)).millisecondsSinceEpoch},
+          'temp_001': {'type': 'temporary', 'expires': DateTime.now().add(const Duration(minutes: -10)).millisecondsSinceEpoch},
+          'temp_002': {'type': 'temporary', 'expires': DateTime.now().add(const Duration(minutes: 10)).millisecondsSinceEpoch},
           'perm_001': {'type': 'permanent', 'important': true}
         };
 

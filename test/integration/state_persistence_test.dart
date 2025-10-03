@@ -178,7 +178,7 @@ void main() {
           priority: i % 10 + 1,
           estimatedEffortWeeks: (i % 20 + 1).toDouble(),
           requiredRoles: {Role.values[i % Role.values.length]: (i % 5 + 1).toDouble()},
-          dependencies: [],
+          dependencies: const [],
         ));
 
         final plan = QuarterPlan(
@@ -187,8 +187,8 @@ void main() {
           year: 2025,
           name: 'Large Test Plan',
           initiatives: initiatives,
-          teamMembers: [],
-          allocations: [],
+          teamMembers: const [],
+          allocations: const [],
         );
 
         final startTime = DateTime.now();
@@ -225,9 +225,9 @@ void main() {
           quarter: i % 4 + 1,
           year: 2025,
           name: 'Concurrent Plan $i',
-          initiatives: [],
-          teamMembers: [],
-          allocations: [],
+          initiatives: const [],
+          teamMembers: const [],
+          allocations: const [],
         ));
 
         // Act - Save multiple plans concurrently
@@ -353,8 +353,8 @@ void main() {
           businessValue: 5,
           priority: 5,
           estimatedEffortWeeks: 1.0,
-          requiredRoles: {Role.backend: 1.0},
-          dependencies: [],
+          requiredRoles: const {Role.backend: 1.0},
+          dependencies: const [],
         ));
 
         final largePlan = QuarterPlan(
@@ -363,8 +363,8 @@ void main() {
           year: 2025,
           name: 'Quota Test Plan',
           initiatives: largeInitiatives,
-          teamMembers: [],
-          allocations: [],
+          teamMembers: const [],
+          allocations: const [],
         );
 
         // Act - Attempt to save large plan (SharedPreferences mock should accept this)

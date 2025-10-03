@@ -118,9 +118,9 @@ void main() {
         // in Phase 3.3 with actual implementations
         
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
-              body: const Text('Drag-Drop Implementation Placeholder'),
+              body: Text('Drag-Drop Implementation Placeholder'),
             ),
           ),
         );
